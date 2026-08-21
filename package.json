@@ -11,8 +11,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css}\" package.json README.md \"*.config.{ts,mjs}\" \"vitest.*.ts\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,css}\" package.json README.md \"*.config.{ts,mjs}\" \"vitest.*.ts\"",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio"
