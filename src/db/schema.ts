@@ -12,7 +12,7 @@ import {
 } from "drizzle-orm/pg-core";
 
 export const dataSourceEnum = pgEnum("data_source", [
-  "hn",
+  "product-hunt",
   "yc-companies",
   "yc-jobs",
 ]);

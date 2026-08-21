@@ -14,7 +14,7 @@ const statusStyles = {
 export function SourceHealthPanel({ health }: { health: SourceHealth[] }) {
   return (
     <aside>
-      <Card className="border border-border p-5 xl:sticky xl:top-6">
+      <Card className="border border-border p-5 sm:p-6">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-sm font-semibold">Source health</p>
@@ -25,13 +25,10 @@ export function SourceHealthPanel({ health }: { health: SourceHealth[] }) {
           <Activity className="size-5 text-primary" />
         </div>
 
-        <div className="mt-5 space-y-3">
+        <div className="mt-5 grid gap-px overflow-hidden border border-border bg-border md:grid-cols-3">
           {health.length ? (
             health.map((source) => (
-              <div
-                key={source.source}
-                className="border-b border-border bg-card py-4 last:border-b-0"
-              >
+              <div key={source.source} className="bg-card p-4">
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     <a

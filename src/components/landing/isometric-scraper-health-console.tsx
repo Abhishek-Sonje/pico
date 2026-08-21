@@ -1,61 +1,69 @@
-"use client";
-import { Activity, CheckCircle2, TriangleAlert } from "lucide-react";
-const rows = [
-  ["HN Who is Hiring", "82 records", "healthy"],
-  ["YC Companies", "7 missing fields", "warning"],
-  ["YC Jobs", "51 records", "healthy"],
-] as const;
+import { AlertTriangle, ArrowRight, Check, Database } from "lucide-react";
+
 export function IsometricScraperHealthConsole() {
   return (
     <div
-      className="iso-stage relative min-h-[390px] overflow-hidden"
-      aria-label="Scraper health console showing validation and recovery"
+      className="relative min-h-[360px] overflow-hidden border border-border bg-background p-5 sm:p-8"
+      aria-label="Failed collection run preserves the last successful startup dataset"
     >
-      <div className="iso-plane iso-card absolute left-[10%] top-12 w-[78%] border border-border bg-card p-5 sm:left-[14%] sm:w-[72%]">
-        <div className="flex items-center justify-between border-b border-border pb-4">
-          <div>
-            <p className="text-sm font-semibold">Source health</p>
-            <p className="font-mono text-[9px] text-muted">LAST RUN · 2M AGO</p>
-          </div>
-          <Activity className="size-5 text-accent" />
-        </div>
-        <div className="mt-3 grid gap-2">
-          {rows.map(([name, detail, status]) => (
-            <div
-              key={name}
-              className="flex items-center gap-3 border border-border bg-surface p-3"
-            >
-              <span
-                className={`size-2 ${status === "healthy" ? "bg-success" : "soft-pulse bg-warning"}`}
-              />
-              <span className="min-w-0 flex-1 truncate text-xs font-medium">
-                {name}
-              </span>
-              <span className="font-mono text-[9px] text-muted">{detail}</span>
-              {status === "healthy" ? (
-                <CheckCircle2 className="size-3 text-success" />
-              ) : (
-                <TriangleAlert className="size-3 text-warning" />
-              )}
-            </div>
-          ))}
-        </div>
-        <div className="mt-4 h-1 bg-surface-muted">
-          <div className="signal-line h-full w-[88%]" />
-        </div>
-      </div>
-      <div className="absolute bottom-6 left-[6%] right-[6%] z-20 grid grid-cols-4 border border-border bg-accent text-accent-foreground">
-        {["Detect", "Validate", "Preserve", "Update"].map((step, index) => (
-          <div
-            key={step}
-            className="border-r border-accent-foreground/20 p-3 text-center last:border-r-0"
-          >
-            <span className="block font-mono text-[9px] opacity-60">
-              {index + 1}/4
+      <div className="absolute inset-x-0 top-1/2 h-px bg-border" />
+      <div className="relative grid gap-5 sm:grid-cols-[1fr_auto_1fr] sm:items-center">
+        <article className="border border-warning/40 bg-card p-5 shadow-soft">
+          <div className="flex items-center justify-between">
+            <span className="font-mono text-[10px] text-muted">
+              CURRENT RUN
             </span>
-            <span className="mt-1 block text-[10px] font-medium">{step}</span>
+            <AlertTriangle className="size-4 text-warning" />
           </div>
-        ))}
+          <h3 className="mt-8 text-lg font-semibold">YC Companies</h3>
+          <p className="mt-2 text-sm text-warning">
+            Run completed with warnings
+          </p>
+          <dl className="mt-5 grid grid-cols-2 gap-px bg-border text-xs">
+            <div className="bg-surface p-3">
+              <dt className="text-muted">Valid rows</dt>
+              <dd className="mt-1 font-mono font-bold">43</dd>
+            </div>
+            <div className="bg-surface p-3">
+              <dt className="text-muted">Isolated</dt>
+              <dd className="mt-1 font-mono font-bold text-warning">7</dd>
+            </div>
+          </dl>
+        </article>
+        <div className="hidden size-10 place-items-center bg-primary sm:grid">
+          <ArrowRight className="size-4" />
+        </div>
+        <article className="border border-success/35 bg-accent p-5 text-accent-foreground shadow-card">
+          <div className="flex items-center justify-between">
+            <span className="font-mono text-[10px] opacity-65">
+              VISIBLE DATASET
+            </span>
+            <Database className="size-4 text-primary" />
+          </div>
+          <h3 className="mt-8 text-lg font-semibold">
+            Last successful data kept
+          </h3>
+          <p className="mt-2 text-sm opacity-70">
+            Useful opportunities remain searchable while the warning is visible.
+          </p>
+          <div className="mt-5 flex items-center gap-2 border-t border-accent-foreground/20 pt-4 text-xs text-primary">
+            <Check className="size-3.5" /> No destructive overwrite
+          </div>
+        </article>
+      </div>
+      <div className="relative mt-6 grid gap-px bg-border text-xs sm:grid-cols-3">
+        <div className="bg-surface p-4">
+          <span className="font-mono text-[10px] text-muted">01</span>
+          <p className="mt-2 font-medium">Validate each row</p>
+        </div>
+        <div className="bg-surface p-4">
+          <span className="font-mono text-[10px] text-muted">02</span>
+          <p className="mt-2 font-medium">Save valid partial results</p>
+        </div>
+        <div className="bg-surface p-4">
+          <span className="font-mono text-[10px] text-muted">03</span>
+          <p className="mt-2 font-medium">Record source health</p>
+        </div>
       </div>
     </div>
   );

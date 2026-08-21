@@ -12,9 +12,9 @@ describe("BrightDataClient", () => {
 
     const client = new BrightDataClient(fetchMock, 0, 500, "test-key");
     const result = await client.run({
-      source: "hn",
+      source: "product-hunt",
       collectorId: "c_test",
-      sourceUrl: "https://news.ycombinator.com/submitted?id=whoishiring",
+      sourceUrl: "https://www.producthunt.com/",
     });
 
     expect(result.snapshotId).toBe("j_snapshot");

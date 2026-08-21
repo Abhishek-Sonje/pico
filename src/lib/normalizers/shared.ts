@@ -12,7 +12,10 @@ export function uniqueStrings(values: string[]) {
 
 export function inferMissingFields(startup: NormalizedStartup) {
   return [
+    !startup.description && "Description",
+    !startup.location && "Location",
     !startup.websiteUrl && "Website",
+    startup.roles.length === 0 && "Open roles",
     startup.people.length === 0 && "Founder information",
     !startup.roles.some((role) => role.applyUrl) && "Apply link",
     !startup.roles.some((role) => role.salary) && "Salary",

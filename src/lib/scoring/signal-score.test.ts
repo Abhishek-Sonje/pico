@@ -4,7 +4,7 @@ import type { NormalizedStartup } from "@/lib/validators/startup.schema";
 
 const rich: NormalizedStartup = {
   name: "Pico",
-  source: "hn",
+  source: "product-hunt",
   sourceUrl: "https://example.com/source",
   description: null,
   industry: null,

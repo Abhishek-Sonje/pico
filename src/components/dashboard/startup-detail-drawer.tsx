@@ -163,24 +163,30 @@ export function StartupDetailDrawer({
 
           <section>
             <h3 className="text-sm font-semibold">Why this score</h3>
-            <ul className="mt-3 space-y-2">
-              {startup.scoreReasons.map((reason) => (
-                <li
-                  key={reason.label}
-                  className="flex items-center gap-2 text-sm text-muted"
-                >
-                  {reason.present ? (
-                    <Check className="size-4 text-success" />
-                  ) : (
-                    <Minus className="size-4 text-muted-foreground" />
-                  )}
-                  {reason.label}
-                  <span className="ml-auto font-mono text-xs">
-                    {reason.present ? `+${reason.points}` : "—"}
-                  </span>
-                </li>
-              ))}
-            </ul>
+            {startup.scoreReasons.length ? (
+              <ul className="mt-3 space-y-2">
+                {startup.scoreReasons.map((reason) => (
+                  <li
+                    key={reason.label}
+                    className="flex items-center gap-2 text-sm text-muted"
+                  >
+                    {reason.present ? (
+                      <Check className="size-4 text-success" />
+                    ) : (
+                      <Minus className="size-4 text-muted-foreground" />
+                    )}
+                    {reason.label}
+                    <span className="ml-auto font-mono text-xs">
+                      {reason.present ? `+${reason.points}` : "—"}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="mt-3 text-sm text-muted">
+                Score reasons are not available for this record.
+              </p>
+            )}
           </section>
 
           <section>

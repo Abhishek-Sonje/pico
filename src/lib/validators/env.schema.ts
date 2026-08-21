@@ -10,7 +10,7 @@ const optionalSecret = z.preprocess(
 const envSchema = z.object({
   DATABASE_URL: optionalSecret.pipe(z.string().url().optional()),
   BRIGHTDATA_API_KEY: optionalSecret,
-  BRIGHTDATA_HN_COLLECTOR_ID: optionalSecret,
+  BRIGHTDATA_PRODUCT_HUNT_COLLECTOR_ID: optionalSecret,
   BRIGHTDATA_YC_COMPANIES_COLLECTOR_ID: optionalSecret,
   BRIGHTDATA_YC_JOBS_COLLECTOR_ID: optionalSecret,
   NEXT_PUBLIC_APP_URL: z.string().url().default("http://localhost:3000"),
@@ -20,7 +20,8 @@ const envSchema = z.object({
 export const env = envSchema.parse({
   DATABASE_URL: process.env.DATABASE_URL,
   BRIGHTDATA_API_KEY: process.env.BRIGHTDATA_API_KEY,
-  BRIGHTDATA_HN_COLLECTOR_ID: process.env.BRIGHTDATA_HN_COLLECTOR_ID,
+  BRIGHTDATA_PRODUCT_HUNT_COLLECTOR_ID:
+    process.env.BRIGHTDATA_PRODUCT_HUNT_COLLECTOR_ID,
   BRIGHTDATA_YC_COMPANIES_COLLECTOR_ID:
     process.env.BRIGHTDATA_YC_COMPANIES_COLLECTOR_ID,
   BRIGHTDATA_YC_JOBS_COLLECTOR_ID: process.env.BRIGHTDATA_YC_JOBS_COLLECTOR_ID,

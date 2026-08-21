@@ -20,7 +20,7 @@ Pico combines approved Bright Data collectors, row-level validation, source-spec
 
 ## Operating Context
 
-Users evaluate records gathered from Hacker News Who is Hiring, Y Combinator Companies, and Y Combinator Jobs. They search and filter opportunities, inspect role and founder details, review score reasons, and monitor source health. Operators configure and publish the fixed Bright Data collectors and can trigger approved source runs.
+Users evaluate records gathered from Product Hunt, Y Combinator Companies, and Y Combinator Jobs. They search and filter opportunities, inspect role and founder details, review score reasons, and monitor source health. Operators configure and publish the fixed Bright Data collectors and can trigger approved source runs.
 
 ## Capabilities and Constraints
 
@@ -30,7 +30,7 @@ Users evaluate records gathered from Hacker News Who is Hiring, Y Combinator Com
 - Expose record-level details, missing fields, source provenance, and source-run health.
 - Preserve successful startup data when a later source run fails.
 - Use public pages only; no authentication or paywall bypass, LinkedIn scraping, private email discovery, spam, or outreach workflow.
-- Product Hunt and Wellfound are not MVP data sources.
+- Wellfound and company official websites are not MVP data sources.
 - Demo data is clearly marked when service credentials are unavailable.
 
 ## Brand Commitments

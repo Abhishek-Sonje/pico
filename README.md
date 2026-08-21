@@ -44,9 +44,9 @@ Pico collects approved public data through Bright Data Scraper Studio, validates
 
 The MVP supports:
 
-1. Hacker News “Who is Hiring?”
-2. Y Combinator Companies
-3. Y Combinator Jobs
+1. Y Combinator Companies
+2. Y Combinator Jobs
+3. Product Hunt
 
 Pico only surfaces public startup, company, hiring, application, team, and official contact signals. It does not scrape login-protected, paywalled, hidden, or private personal data. LinkedIn profiles and private email discovery are explicitly out of scope.
 
@@ -66,7 +66,7 @@ The API key is imported only by server modules and is never returned to the brow
 
 Collectors should publish camelCase JSON matching the schemas under `src/lib/normalizers`.
 
-- HN: `companyName`, `description`, `sourceUrl`, `websiteUrl`, `location`, `postedAt`, `roles`, `people`, `links`, `technologies`
+- Product Hunt: `name`, `tagline`, `description`, `sourceUrl`, `websiteUrl`, `location`, `launchedAt`, `makers`, `links`, `topics`
 - YC Companies: `name`, `description`, `sourceUrl`, `websiteUrl`, `location`, `batch`, `industry`, `founders`, `roles`, `links`, `technologies`
 - YC Jobs: `companyName`, `description`, `companySourceUrl`, `sourceUrl`, `websiteUrl`, `location`, `industry`, `postedAt`, `role`, `founders`, `links`, `technologies`
 
@@ -139,7 +139,7 @@ On Windows PowerShell installations that block the pnpm script shim, use `pnpm.c
 | -------------------------------------- | ----------------------------------------------- |
 | `DATABASE_URL`                         | Neon pooled Postgres connection string          |
 | `BRIGHTDATA_API_KEY`                   | Server-only Bright Data API key                 |
-| `BRIGHTDATA_HN_COLLECTOR_ID`           | Published HN collector                          |
+| `BRIGHTDATA_PRODUCT_HUNT_COLLECTOR_ID` | Published Product Hunt collector                |
 | `BRIGHTDATA_YC_COMPANIES_COLLECTOR_ID` | Published YC Companies collector                |
 | `BRIGHTDATA_YC_JOBS_COLLECTOR_ID`      | Published YC Jobs collector                     |
 | `NEXT_PUBLIC_APP_URL`                  | Trusted application origin for metadata         |
@@ -164,10 +164,10 @@ Publish the matching collectors in Bright Data Scraper Studio, copy their IDs in
 ```bash
 curl -X POST http://localhost:3000/api/scrape/run \
   -H "Content-Type: application/json" \
-  -d '{"source":"hn"}'
+  -d '{"source":"product-hunt"}'
 ```
 
-Supported source values are `hn`, `yc-companies`, and `yc-jobs`. The route accepts only those fixed collectors and source URLs; callers cannot submit arbitrary scraping targets.
+Supported source values are `product-hunt`, `yc-companies`, and `yc-jobs`. The route accepts only those fixed collectors and source URLs; callers cannot submit arbitrary scraping targets.
 
 ## Commit History / Build Phases
 
@@ -190,7 +190,7 @@ Every implementation phase is expected to pass lint, type checking, tests, and a
 - Collectors must be created and published in Scraper Studio before their IDs can be configured.
 - The scraper endpoint performs bounded polling and therefore needs a host that permits the configured route duration.
 - Cross-source company deduplication is intentionally conservative; source-specific records remain traceable.
-- Optional sources such as Product Hunt and Wellfound are not part of the MVP.
+- Optional sources such as Wellfound and company official websites are not part of the MVP.
 
 ## Future Improvements
 

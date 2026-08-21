@@ -292,17 +292,16 @@ Do not show fake health states. If using demo data, mark it as demo data.
 
 Build in this order:
 
-1. Hacker News Who is Hiring
-2. YC Companies
-3. YC Jobs
+1. YC Companies
+2. YC Jobs
+3. Product Hunt
 
 ### 7.2 Optional Sources
 
 Only add after MVP is stable:
 
-1. Product Hunt
-2. Wellfound
-3. Company official websites
+1. Wellfound
+2. Company official websites
 
 ### 7.3 Source Strategy
 
@@ -523,7 +522,7 @@ src/
       types.ts
 
     normalizers/
-      hn-who-is-hiring.ts
+      product-hunt.ts
       yc-companies.ts
       yc-jobs.ts
 
@@ -601,7 +600,7 @@ src/lib/bright-data/types.ts
 ```env
 DATABASE_URL=
 BRIGHTDATA_API_KEY=
-BRIGHTDATA_HN_COLLECTOR_ID=
+BRIGHTDATA_PRODUCT_HUNT_COLLECTOR_ID=
 BRIGHTDATA_YC_COMPANIES_COLLECTOR_ID=
 BRIGHTDATA_YC_JOBS_COLLECTOR_ID=
 NEXT_PUBLIC_APP_URL=
@@ -875,7 +874,7 @@ Body:
 
 ```ts
 {
-  source: "hn" | "yc-companies" | "yc-jobs";
+  source: "product-hunt" | "yc-companies" | "yc-jobs";
 }
 ```
 
@@ -909,7 +908,7 @@ UI errors should be human-readable.
 Example:
 
 ```text
-Could not refresh Hacker News data. Showing the latest saved results instead.
+Could not refresh Product Hunt data. Showing the latest saved results instead.
 ```
 
 ## 20. Demo Data
@@ -1086,7 +1085,7 @@ Good:
 
 ```ts
 calculateSignalScore;
-normalizeHackerNewsPost;
+normalizeProductHuntPost;
 getSourceHealthSummary;
 upsertStartupWithRoles;
 ```
@@ -1144,7 +1143,7 @@ Content:
 ```env
 DATABASE_URL="postgresql://..."
 BRIGHTDATA_API_KEY=""
-BRIGHTDATA_HN_COLLECTOR_ID=""
+BRIGHTDATA_PRODUCT_HUNT_COLLECTOR_ID=""
 BRIGHTDATA_YC_COMPANIES_COLLECTOR_ID=""
 BRIGHTDATA_YC_JOBS_COLLECTOR_ID=""
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
@@ -1268,15 +1267,15 @@ The product name is **Pico**.
 
 Use **Pico** consistently across:
 
-* landing page
-* dashboard
-* metadata
-* README
-* browser title
-* Open Graph metadata
-* empty states
-* error states
-* demo copy
+- landing page
+- dashboard
+- metadata
+- README
+- browser title
+- Open Graph metadata
+- empty states
+- error states
+- demo copy
 
 Do not use old names like SignalScout, Startup Signal Radar, or StartupScout unless they are removed everywhere.
 
@@ -1349,19 +1348,19 @@ Tailwind classes should use semantic names.
 Good:
 
 ```tsx
-className="bg-background text-foreground"
-className="bg-card border-border"
-className="text-muted-foreground"
-className="bg-primary text-primary-foreground"
+className = "bg-background text-foreground";
+className = "bg-card border-border";
+className = "text-muted-foreground";
+className = "bg-primary text-primary-foreground";
 ```
 
 Bad:
 
 ```tsx
-className="bg-black text-white"
-className="text-gray-400"
-className="border-zinc-800"
-className="bg-[#0B0D13]"
+className = "bg-black text-white";
+className = "text-gray-400";
+className = "border-zinc-800";
+className = "bg-[#0B0D13]";
 ```
 
 Small exceptions are allowed only for very specific decorative gradients or one-off visual effects, but core UI should use named tokens.
@@ -1382,11 +1381,11 @@ Preferred usage:
 
 If custom text utilities are not configured, use consistent Tailwind sizes:
 
-* hero title: `text-5xl` to `text-7xl`
-* section heading: `text-3xl` to `text-4xl`
-* card title: `text-lg` to `text-xl`
-* body: `text-sm` to `text-base`
-* metadata/caption: `text-xs`
+- hero title: `text-5xl` to `text-7xl`
+- section heading: `text-3xl` to `text-4xl`
+- card title: `text-lg` to `text-xl`
+- body: `text-sm` to `text-base`
+- metadata/caption: `text-xs`
 
 Do not mix many random sizes without reason.
 
@@ -1499,7 +1498,7 @@ export function Card({ className, ...props }: CardProps) {
     <div
       className={cn(
         "rounded-xl border border-border bg-card text-card-foreground shadow-card",
-        className
+        className,
       )}
       {...props}
     />
@@ -1529,14 +1528,14 @@ Dashboard components must be especially consistent.
 
 Use tokens for:
 
-* cards
-* borders
-* badges
-* filters
-* drawer
-* search bar
-* score indicators
-* source health indicators
+- cards
+- borders
+- badges
+- filters
+- drawer
+- search bar
+- score indicators
+- source health indicators
 
 Do not create different card styles randomly across the page.
 
@@ -1546,12 +1545,12 @@ The Pico UI should feel like one carefully designed product.
 
 Every page should share:
 
-* same color system
-* same spacing rhythm
-* same border style
-* same card radius
-* same typography scale
-* same animation style
-* same button behavior
+- same color system
+- same spacing rhythm
+- same border style
+- same card radius
+- same typography scale
+- same animation style
+- same button behavior
 
 No random hardcoded design decisions should appear inside individual components.

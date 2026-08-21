@@ -1,20 +1,23 @@
 import { describe, expect, it } from "vitest";
-import { normalizeHackerNewsPost } from "./hn-who-is-hiring";
+import { normalizeProductHuntPost } from "./product-hunt";
 import { normalizeYcCompany } from "./yc-companies";
 import { normalizeYcJob } from "./yc-jobs";
 
 describe("source normalizers", () => {
-  it("keeps a partial Hacker News record", () => {
-    const result = normalizeHackerNewsPost({
-      companyName: " Acme ",
-      sourceUrl: "https://news.ycombinator.com/item?id=1",
-      roles: [],
-      people: [],
+  it("keeps a partial Product Hunt record", () => {
+    const result = normalizeProductHuntPost({
+      name: " Acme ",
+      sourceUrl: "https://www.producthunt.com/products/acme",
+      makers: [],
       links: [],
-      technologies: ["Go", "Go"],
+      topics: ["Developer Tools", "Developer Tools"],
     });
     expect(result.name).toBe("Acme");
-    expect(result.technologies).toEqual(["Go"]);
+    expect(result.source).toBe("product-hunt");
+    expect(result.technologies).toEqual(["Developer Tools"]);
+    expect(result.description).toBeNull();
+    expect(result.location).toBeNull();
+    expect(result.roles).toEqual([]);
   });
   it("normalizes a YC company", () => {
     const result = normalizeYcCompany({

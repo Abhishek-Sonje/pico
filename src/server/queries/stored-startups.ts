@@ -90,7 +90,10 @@ export async function getStoredDashboardData(): Promise<DashboardData> {
           present,
         })),
         missingFields: [
+          !startup.description && "Description",
+          !startup.location && "Location",
           !startup.websiteUrl && "Website",
+          !roleRows.length && "Open roles",
           !personRows.length && "Founder information",
           !roleRows.some((role) => role.applyUrl) && "Apply link",
         ].filter(Boolean) as string[],
@@ -107,14 +110,14 @@ export async function getStoredDashboardData(): Promise<DashboardData> {
     .map((run) => ({
       source: run.source,
       sourceName:
-        run.source === "hn"
-          ? "Hacker News"
+        run.source === "product-hunt"
+          ? "Product Hunt"
           : run.source === "yc-companies"
             ? "YC Companies"
             : "YC Jobs",
       sourceUrl:
-        run.source === "hn"
-          ? "https://news.ycombinator.com/submitted?id=whoishiring"
+        run.source === "product-hunt"
+          ? "https://www.producthunt.com/"
           : run.source === "yc-companies"
             ? "https://www.ycombinator.com/companies"
             : "https://www.ycombinator.com/jobs",

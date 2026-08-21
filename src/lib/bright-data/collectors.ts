@@ -6,13 +6,15 @@ import type { CollectorConfig } from "./types";
 import { BrightDataError } from "./types";
 
 const sourceUrls: Record<DataSource, string> = {
-  hn: "https://news.ycombinator.com/submitted?id=whoishiring",
+  "product-hunt": "https://www.producthunt.com/",
   "yc-companies": "https://www.ycombinator.com/companies",
   "yc-jobs": "https://www.ycombinator.com/jobs",
 };
 
 function getCollectorId(source: DataSource) {
-  if (source === "hn") return env.BRIGHTDATA_HN_COLLECTOR_ID;
+  if (source === "product-hunt") {
+    return env.BRIGHTDATA_PRODUCT_HUNT_COLLECTOR_ID;
+  }
   if (source === "yc-companies") {
     return env.BRIGHTDATA_YC_COMPANIES_COLLECTOR_ID;
   }

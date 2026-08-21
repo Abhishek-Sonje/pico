@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 
 const sourceNames = {
-  hn: "Hacker News",
+  "product-hunt": "Product Hunt",
   "yc-companies": "YC Companies",
   "yc-jobs": "YC Jobs",
 };

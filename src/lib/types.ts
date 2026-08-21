@@ -1,4 +1,4 @@
-export const dataSources = ["hn", "yc-companies", "yc-jobs"] as const;
+export const dataSources = ["product-hunt", "yc-companies", "yc-jobs"] as const;
 export type DataSource = (typeof dataSources)[number];
 export type HealthStatus = "healthy" | "warning" | "failed";
 export type LinkType =

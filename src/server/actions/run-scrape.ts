@@ -4,7 +4,7 @@ import { getDatabase } from "@/db";
 import { sourceRuns } from "@/db/schema";
 import { BrightDataClient } from "@/lib/bright-data/client";
 import { getCollectorConfig } from "@/lib/bright-data/collectors";
-import { normalizeHackerNewsPost } from "@/lib/normalizers/hn-who-is-hiring";
+import { normalizeProductHuntPost } from "@/lib/normalizers/product-hunt";
 import { normalizeYcCompany } from "@/lib/normalizers/yc-companies";
 import { normalizeYcJob } from "@/lib/normalizers/yc-jobs";
 import type { DataSource, HealthStatus } from "@/lib/types";
@@ -15,7 +15,7 @@ function normalizeRecord(
   source: DataSource,
   record: unknown,
 ): NormalizedStartup {
-  if (source === "hn") return normalizeHackerNewsPost(record);
+  if (source === "product-hunt") return normalizeProductHuntPost(record);
   if (source === "yc-companies") return normalizeYcCompany(record);
   return normalizeYcJob(record);
 }

@@ -5,6 +5,8 @@ export function filterStartups(
   startups: StartupProfile[],
   filters: StartupFilters,
 ) {
+  const query = filters.q?.trim().toLowerCase() ?? "";
+
   return startups.filter((startup) => {
     const searchText = [
       startup.name,
@@ -17,7 +19,7 @@ export function filterStartups(
       .toLowerCase();
 
     return (
-      (!filters.q || searchText.includes(filters.q.toLowerCase())) &&
+      (!query || searchText.includes(query)) &&
       (!filters.source || startup.source === filters.source) &&
       (!filters.role ||
         startup.roles.some((role) =>

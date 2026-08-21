@@ -1,7 +1,6 @@
 "use client";
 import { useMemo, useState } from "react";
-import Link from "next/link";
-import { Radar, RotateCcw, Search, SlidersHorizontal } from "lucide-react";
+import { RotateCcw, Search, SlidersHorizontal } from "lucide-react";
 import type { DashboardData, DataSource, StartupProfile } from "@/lib/types";
 import { filterStartups } from "@/lib/filters/filter-startups";
 import { Input } from "@/components/ui/input";
@@ -9,7 +8,7 @@ import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { StartupCard } from "./startup-card";
 import { StartupDetailDrawer } from "./startup-detail-drawer";
-import { SourceHealthPanel } from "./source-health-panel";
+import { AppNavbar } from "@/components/navigation/app-navbar";
 
 type UiFilters = {
   q: string;
@@ -64,22 +63,7 @@ export function DashboardShell({
   );
   return (
     <main className="min-h-screen bg-background">
-      <header className="border-b border-border bg-foreground text-background">
-        <div className="mx-auto flex max-w-[1500px] items-center justify-between px-5 py-4 lg:px-8">
-          <Link href="/" className="flex items-center gap-2 font-semibold">
-            <span className="grid size-8 place-items-center bg-primary text-primary-foreground">
-              <Radar className="size-4" />
-            </span>
-            Pico
-          </Link>
-          <Link
-            href="/"
-            className="text-xs text-background/65 hover:text-primary"
-          >
-            Back to product story
-          </Link>
-        </div>
-      </header>
+      <AppNavbar page="dashboard" />
       <div className="mx-auto max-w-[1500px] px-5 py-10 lg:px-8 lg:py-14">
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>
@@ -99,8 +83,8 @@ export function DashboardShell({
             {initialData.notice}
           </div>
         )}
-        <div className="mt-8 grid gap-6 xl:grid-cols-[1fr_330px]">
-          <section>
+        <div className="mt-8">
+          <section aria-label="Startup opportunity filters and results">
             <div className="border-y border-border bg-surface py-4">
               <div className="relative">
                 <Search className="absolute left-3.5 top-3.5 size-4 text-muted" />
@@ -126,7 +110,7 @@ export function DashboardShell({
                   aria-label="Filter by source"
                 >
                   <option value="">All sources</option>
-                  <option value="hn">Hacker News</option>
+                  <option value="product-hunt">Product Hunt</option>
                   <option value="yc-companies">YC Companies</option>
                   <option value="yc-jobs">YC Jobs</option>
                 </Select>
@@ -177,7 +161,7 @@ export function DashboardShell({
               </span>
             </div>
             {visible.length ? (
-              <div className="mt-4 grid gap-4 md:grid-cols-2 2xl:grid-cols-3">
+              <div className="mt-4 grid gap-4 md:grid-cols-3 2xl:grid-cols-3">
                 {visible
                   .sort((a, b) => b.signalScore - a.signalScore)
                   .map((startup) => (
@@ -205,7 +189,6 @@ export function DashboardShell({
               </div>
             )}
           </section>
-          <SourceHealthPanel health={initialData.health} />
         </div>
       </div>
       <StartupDetailDrawer

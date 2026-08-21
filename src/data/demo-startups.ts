@@ -20,7 +20,12 @@ const base = (
   location: null,
   batch: null,
   source,
-  sourceUrl: "https://news.ycombinator.com/submitted?id=whoishiring",
+  sourceUrl:
+    source === "product-hunt"
+      ? "https://www.producthunt.com/"
+      : source === "yc-companies"
+        ? "https://www.ycombinator.com/companies"
+        : "https://www.ycombinator.com/jobs",
   websiteUrl: null,
   sourcePublishedAt: now,
   signalScore: score,
@@ -34,7 +39,7 @@ const base = (
 
 export const demoStartups: StartupProfile[] = [
   {
-    ...base("demo-1", "Orbital", "hn", 95),
+    ...base("demo-1", "Orbital", "yc-jobs", 95),
     description:
       "Developer infrastructure for teams shipping reliable AI products.",
     industry: "Developer tools",
@@ -49,7 +54,7 @@ export const demoStartups: StartupProfile[] = [
         remote: true,
         salary: "$160k–$205k",
         applyUrl: "https://example.com/jobs/product-engineer",
-        sourceUrl: "https://news.ycombinator.com/item?id=1",
+        sourceUrl: "https://www.ycombinator.com/jobs",
       },
       {
         id: "r2",
@@ -58,7 +63,7 @@ export const demoStartups: StartupProfile[] = [
         remote: true,
         salary: null,
         applyUrl: "https://example.com/jobs/infra",
-        sourceUrl: "https://news.ycombinator.com/item?id=1",
+        sourceUrl: "https://www.ycombinator.com/jobs",
       },
     ],
     people: [
@@ -137,27 +142,18 @@ export const demoStartups: StartupProfile[] = [
     missingFields: [],
   },
   {
-    ...base("demo-3", "Morrow Systems", "yc-jobs", 61),
+    ...base("demo-3", "Morrow Systems", "product-hunt", 61),
     description: "Automation for climate operations teams.",
     industry: "Climate",
     location: "London",
     technologies: ["Go"],
-    roles: [
-      {
-        id: "r4",
-        title: "Backend engineer",
-        location: "London",
-        remote: null,
-        salary: null,
-        applyUrl: null,
-        sourceUrl: "https://www.ycombinator.com/jobs",
-      },
-    ],
+    sourceUrl: "https://www.producthunt.com/",
+    roles: [],
     scoreReasons: [
-      { label: "Hiring roles found", points: 25, present: true },
+      { label: "Hiring roles found", points: 25, present: false },
       { label: "Salary listed", points: 5, present: false },
     ],
-    missingFields: ["Apply link", "Founder information", "Salary"],
+    missingFields: ["Open roles", "Apply link", "Founder information"],
   },
 ];
 
@@ -169,8 +165,8 @@ const health = (
   source,
   sourceName: name,
   sourceUrl:
-    source === "hn"
-      ? "https://news.ycombinator.com/submitted?id=whoishiring"
+    source === "product-hunt"
+      ? "https://www.producthunt.com/"
       : source === "yc-companies"
         ? "https://www.ycombinator.com/companies"
         : "https://www.ycombinator.com/jobs",
@@ -185,7 +181,7 @@ const health = (
 export const demoDashboardData: DashboardData = {
   startups: demoStartups,
   health: [
-    health("hn", "Hacker News", 38),
+    health("product-hunt", "Product Hunt", 38),
     health("yc-companies", "YC Companies", 112),
     health("yc-jobs", "YC Jobs", 74),
   ],
