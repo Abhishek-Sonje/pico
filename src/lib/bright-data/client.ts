@@ -11,6 +11,7 @@ export class BrightDataClient {
     private readonly fetchImpl: Fetch = fetch,
     private readonly pollIntervalMs = 5_000,
     private readonly timeoutMs = 240_000,
+    private readonly apiKey = requireBrightDataApiKey(),
   ) {}
 
   async run(config: CollectorConfig): Promise<CollectionResult> {
@@ -79,7 +80,7 @@ export class BrightDataClient {
 
   private headers() {
     return {
-      Authorization: `Bearer ${requireBrightDataApiKey()}`,
+      Authorization: `Bearer ${this.apiKey}`,
       "Content-Type": "application/json",
     };
   }
