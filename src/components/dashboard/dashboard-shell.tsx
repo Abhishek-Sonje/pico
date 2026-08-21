@@ -2,7 +2,8 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Radar, RotateCcw, Search, SlidersHorizontal } from "lucide-react";
-import type { DashboardData, StartupProfile } from "@/lib/types";
+import type { DashboardData, DataSource, StartupProfile } from "@/lib/types";
+import { filterStartups } from "@/lib/filters/filter-startups";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
@@ -10,14 +11,30 @@ import { StartupCard } from "./startup-card";
 import { StartupDetailDrawer } from "./startup-detail-drawer";
 import { SourceHealthPanel } from "./source-health-panel";
 
-const initialFilters = {
+type UiFilters = {
+  q: string;
+  source: DataSource | "";
+  role: string;
+  remote: boolean;
+  hasApplyLink: boolean;
+  hasFounderInfo: boolean;
+};
+
+const initialFilters: UiFilters = {
   q: "",
   source: "",
   role: "",
   remote: false,
-  apply: false,
-  founder: false,
+  hasApplyLink: false,
+  hasFounderInfo: false,
 };
+
+const booleanFilters = [
+  ["remote", "Remote only"],
+  ["hasApplyLink", "Has apply link"],
+  ["hasFounderInfo", "Has founder info"],
+] as const;
+
 export function DashboardShell({
   initialData,
 }: {
@@ -38,29 +55,10 @@ export function DashboardShell({
   );
   const visible = useMemo(
     () =>
-      initialData.startups.filter((startup) => {
-        const haystack = [
-          startup.name,
-          startup.description,
-          ...startup.technologies,
-          ...startup.roles.map((role) => role.title),
-        ]
-          .filter(Boolean)
-          .join(" ")
-          .toLowerCase();
-        return (
-          (!filters.q || haystack.includes(filters.q.toLowerCase())) &&
-          (!filters.source || startup.source === filters.source) &&
-          (!filters.role ||
-            startup.roles.some((role) => role.title === filters.role)) &&
-          (!filters.remote || startup.roles.some((role) => role.remote)) &&
-          (!filters.apply ||
-            startup.roles.some((role) => role.applyUrl) ||
-            startup.links.some((link) =>
-              ["apply", "careers"].includes(link.type),
-            )) &&
-          (!filters.founder || startup.people.length > 0)
-        );
+      filterStartups(initialData.startups, {
+        ...filters,
+        source: filters.source || undefined,
+        role: filters.role || undefined,
       }),
     [filters, initialData.startups],
   );
@@ -116,7 +114,10 @@ export function DashboardShell({
                 <Select
                   value={filters.source}
                   onChange={(event) =>
-                    setFilters({ ...filters, source: event.target.value })
+                    setFilters({
+                      ...filters,
+                      source: event.target.value as DataSource | "",
+                    })
                   }
                   aria-label="Filter by source"
                 >
@@ -137,18 +138,14 @@ export function DashboardShell({
                     <option key={role}>{role}</option>
                   ))}
                 </Select>
-                {[
-                  ["remote", "Remote only"],
-                  ["apply", "Has apply link"],
-                  ["founder", "Has founder info"],
-                ].map(([key, label]) => (
+                {booleanFilters.map(([key, label]) => (
                   <label
                     key={key}
                     className="flex h-11 cursor-pointer items-center gap-2 rounded-xl border border-border px-3 text-sm text-muted"
                   >
                     <input
                       type="checkbox"
-                      checked={filters[key as "remote" | "apply" | "founder"]}
+                      checked={filters[key]}
                       onChange={(event) =>
                         setFilters({ ...filters, [key]: event.target.checked })
                       }
