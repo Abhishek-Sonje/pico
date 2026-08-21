@@ -12,6 +12,20 @@ export const metadata: Metadata = {
     title: "Pico — Startup opportunity radar",
     description: "Find the startup signal before everyone else.",
     type: "website",
+    images: [
+      {
+        url: "/og.png",
+        width: 1792,
+        height: 944,
+        alt: "Pico startup opportunity radar",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Pico — Startup opportunity radar",
+    description: "Find the startup signal before everyone else.",
+    images: ["/og.png"],
   },
 };
 
