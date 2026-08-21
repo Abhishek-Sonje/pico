@@ -64,40 +64,44 @@ export function DashboardShell({
   );
   return (
     <main className="min-h-screen bg-background">
-      <header className="border-b border-border-muted bg-surface/70 backdrop-blur">
+      <header className="border-b border-border bg-foreground text-background">
         <div className="mx-auto flex max-w-[1500px] items-center justify-between px-5 py-4 lg:px-8">
           <Link href="/" className="flex items-center gap-2 font-semibold">
-            <span className="grid size-8 place-items-center rounded-lg bg-primary text-primary-foreground">
+            <span className="grid size-8 place-items-center bg-primary text-primary-foreground">
               <Radar className="size-4" />
             </span>
             Pico
           </Link>
-          <span className="text-xs text-muted">Opportunity radar</span>
+          <Link
+            href="/"
+            className="text-xs text-background/65 hover:text-primary"
+          >
+            Back to product story
+          </Link>
         </div>
       </header>
-      <div className="mx-auto max-w-[1500px] px-5 py-8 lg:px-8">
+      <div className="mx-auto max-w-[1500px] px-5 py-10 lg:px-8 lg:py-14">
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>
-            <p className="text-sm font-medium text-primary">Signal dashboard</p>
-            <h1 className="mt-2 text-3xl font-semibold tracking-tight">
+            <h1 className="text-4xl font-semibold tracking-[-.035em] sm:text-5xl">
               Startups worth a closer look
             </h1>
-            <p className="mt-2 text-sm text-muted">
+            <p className="mt-4 text-sm text-muted">
               Ranked from explainable public company and hiring signals.
             </p>
           </div>
-          <div className="rounded-full border border-border bg-card px-3 py-1.5 text-xs text-muted">
+          <div className="rounded-full bg-primary-muted px-3 py-1.5 font-mono text-[10px] font-medium text-accent">
             {initialData.mode === "demo" ? "Demo dataset" : "Live database"}
           </div>
         </div>
         {initialData.notice && (
-          <div className="mt-6 rounded-xl border border-warning/30 bg-warning/10 px-4 py-3 text-sm text-warning">
+          <div className="mt-6 border border-warning/30 bg-warning/10 px-4 py-3 text-sm text-warning">
             {initialData.notice}
           </div>
         )}
         <div className="mt-8 grid gap-6 xl:grid-cols-[1fr_330px]">
           <section>
-            <div className="rounded-2xl border border-border bg-card p-4">
+            <div className="border-y border-border bg-surface py-4">
               <div className="relative">
                 <Search className="absolute left-3.5 top-3.5 size-4 text-muted" />
                 <Input
@@ -141,7 +145,7 @@ export function DashboardShell({
                 {booleanFilters.map(([key, label]) => (
                   <label
                     key={key}
-                    className="flex h-11 cursor-pointer items-center gap-2 rounded-xl border border-border px-3 text-sm text-muted"
+                    className="flex h-11 cursor-pointer items-center gap-2 rounded-md border border-border bg-card px-3 text-sm text-muted"
                   >
                     <input
                       type="checkbox"
@@ -185,7 +189,7 @@ export function DashboardShell({
                   ))}
               </div>
             ) : (
-              <div className="mt-4 rounded-2xl border border-dashed border-border bg-card py-20 text-center">
+              <div className="mt-4 rounded-xl border border-dashed border-border bg-card py-20 text-center">
                 <Search className="mx-auto size-8 text-muted" />
                 <h2 className="mt-4 font-semibold">No signals match</h2>
                 <p className="mt-2 text-sm text-muted">

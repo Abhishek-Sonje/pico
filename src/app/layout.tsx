@@ -1,5 +1,12 @@
 import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+
+const geist = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -10,7 +17,7 @@ export const metadata: Metadata = {
     "Discover startups worth applying to through clean, searchable, explainable public hiring signals.",
   openGraph: {
     title: "Pico — Startup opportunity radar",
-    description: "Find the startup signal before everyone else.",
+    description: "Public startup signals, cleaned and scored.",
     type: "website",
     images: [
       {
@@ -24,15 +31,19 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Pico — Startup opportunity radar",
-    description: "Find the startup signal before everyone else.",
+    description: "Public startup signals, cleaned and scored.",
     images: ["/og.png"],
   },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className="h-full antialiased">
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html
+      lang="en"
+      data-scroll-behavior="smooth"
+      className={`${geist.variable} ${geistMono.variable} h-full antialiased`}
+    >
+      <body className="min-h-full">{children}</body>
     </html>
   );
 }

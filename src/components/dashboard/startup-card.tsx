@@ -22,7 +22,7 @@ export function StartupCard({
     startup.links.some((link) => ["apply", "careers"].includes(link.type));
 
   return (
-    <Card className="group flex min-h-72 flex-col p-5 transition duration-200 hover:-translate-y-1 hover:border-primary/50">
+    <Card className="group lift flex min-h-72 flex-col overflow-hidden border border-transparent p-5 transition-[transform,box-shadow,border-color] duration-200 hover:border-border hover:shadow-card">
       <button
         type="button"
         className="flex h-full flex-col text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -36,7 +36,7 @@ export function StartupCard({
               {startup.name}
             </h2>
           </div>
-          <span className="grid size-12 shrink-0 place-items-center rounded-full border border-primary/40 bg-primary-muted font-semibold text-primary">
+          <span className="grid size-11 shrink-0 place-items-center bg-primary font-mono text-sm font-bold text-primary-foreground">
             {startup.signalScore}
           </span>
         </div>
@@ -75,7 +75,7 @@ export function StartupCard({
           >
             {hasApply ? "Apply link available" : "No apply link"}
           </span>
-          <ArrowUpRight className="size-4 text-muted transition group-hover:text-primary" />
+          <ArrowUpRight className="size-4 text-muted transition group-hover:text-accent" />
         </div>
       </button>
     </Card>

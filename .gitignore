@@ -40,3 +40,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local design references and editor metadata
+/paid-DESIGN.md
+/component.md
+/.claude/
+/.cursor/

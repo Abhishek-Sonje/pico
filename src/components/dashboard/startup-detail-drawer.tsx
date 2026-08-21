@@ -39,7 +39,7 @@ export function StartupDetailDrawer({
       ref={dialogRef}
       onClose={onClose}
       onClick={(event) => event.target === dialogRef.current && onClose()}
-      className="ml-auto mr-0 h-dvh max-h-none w-full max-w-xl border-l border-border bg-surface p-0 text-foreground backdrop:bg-background/75 backdrop:backdrop-blur-sm"
+      className="ml-auto mr-0 h-dvh max-h-none w-full max-w-xl border-l border-border bg-surface p-0 text-foreground shadow-card backdrop:bg-foreground/55 backdrop:backdrop-blur-sm open:animate-none"
       aria-labelledby="startup-drawer-title"
     >
       <div className="flex min-h-full flex-col">
@@ -64,8 +64,8 @@ export function StartupDetailDrawer({
         </header>
 
         <div className="space-y-8 p-6">
-          <div className="flex items-center gap-4 rounded-2xl border border-primary/30 bg-primary-muted/50 p-4">
-            <span className="grid size-16 place-items-center rounded-full border border-primary/40 text-xl font-semibold text-primary">
+          <div className="flex items-center gap-4 border border-primary bg-primary-muted p-4">
+            <span className="grid size-16 place-items-center bg-primary font-mono text-xl font-bold text-primary-foreground">
               {startup.signalScore}
             </span>
             <div>
@@ -103,7 +103,7 @@ export function StartupDetailDrawer({
                 {startup.roles.map((role) => (
                   <div
                     key={role.id}
-                    className="rounded-xl border border-border bg-card p-4"
+                    className="rounded-lg border border-border bg-card p-4"
                   >
                     <p className="font-medium">{role.title}</p>
                     <p className="mt-1 flex items-center gap-1 text-xs text-muted">

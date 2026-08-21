@@ -1,215 +1,204 @@
 import Link from "next/link";
-import {
-  ArrowRight,
-  Database,
-  Radar,
-  ShieldCheck,
-  Sparkles,
-} from "lucide-react";
-import { HeroCardStack } from "@/components/landing/isometric-card-stack";
-import { Badge } from "@/components/ui/badge";
+import { ArrowRight, Check, Radar, ShieldCheck } from "lucide-react";
+import { IsometricSignalPipeline } from "@/components/landing/isometric-signal-pipeline";
+import { IsometricScraperHealthConsole } from "@/components/landing/isometric-scraper-health-console";
+import { IsometricStartupCardStack } from "@/components/landing/isometric-startup-card-stack";
 
-const sources = [
-  {
-    name: "Hacker News",
-    detail: "Who is Hiring?",
-    href: "https://news.ycombinator.com/submitted?id=whoishiring",
-  },
-  {
-    name: "Y Combinator",
-    detail: "Companies",
-    href: "https://www.ycombinator.com/companies",
-  },
-  {
-    name: "YC Jobs",
-    detail: "Open roles",
-    href: "https://www.ycombinator.com/jobs",
-  },
+const facts = [
+  "Public sources only",
+  "Explainable 100-point score",
+  "Last good dataset preserved",
 ];
 
 export default function Home() {
   return (
-    <main className="overflow-hidden">
-      <section className="relative min-h-screen border-b border-border-muted">
-        <div className="pico-grid pointer-events-none absolute inset-0 opacity-60" />
-        <div className="absolute left-1/3 top-0 h-96 w-96 rounded-full bg-primary/15 blur-[120px]" />
+    <main className="w-full max-w-full overflow-x-hidden">
+      <header className="border-b border-border bg-background">
         <nav
-          className="relative mx-auto flex max-w-7xl items-center justify-between px-6 py-6 lg:px-8"
+          className="mx-auto flex max-w-[1440px] items-center justify-between px-5 py-5 lg:px-10"
           aria-label="Primary navigation"
         >
           <Link
             href="/"
-            className="flex items-center gap-2 text-lg font-semibold"
+            className="flex items-center gap-3 text-base font-semibold"
           >
-            <span className="grid size-8 place-items-center rounded-lg bg-primary text-primary-foreground">
+            <span className="grid size-9 place-items-center bg-foreground text-primary">
               <Radar className="size-4" />
             </span>
             Pico
           </Link>
+          <div className="hidden items-center gap-8 text-sm text-muted md:flex">
+            <a href="#workflow" className="hover:text-foreground">
+              Workflow
+            </a>
+            <a href="#resilience" className="hover:text-foreground">
+              Source health
+            </a>
+          </div>
           <Link
             href="/dashboard"
-            className="rounded-xl border border-border bg-surface/70 px-4 py-2 text-sm font-medium transition hover:border-primary hover:bg-surface-muted"
+            className="inline-flex h-10 items-center gap-2 bg-foreground px-4 text-sm font-medium text-primary"
           >
-            View dashboard
+            Open dashboard <ArrowRight className="size-4" />
           </Link>
         </nav>
-        <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-6 pb-24 pt-20 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:pt-28">
-          <div>
-            <Badge className="mb-6 border-primary/40 bg-primary-muted text-primary">
-              <Sparkles className="mr-1.5 size-3" />
-              Startup opportunity radar
-            </Badge>
-            <h1 className="max-w-3xl text-5xl font-semibold leading-[1.02] tracking-[-0.045em] sm:text-6xl lg:text-7xl">
-              Find the startup signal before everyone else.
+      </header>
+      <section className="editorial-grid border-b border-border">
+        <div className="mx-auto grid min-h-[760px] max-w-[1440px] items-center gap-10 px-5 py-20 lg:grid-cols-[.88fr_1.12fr] lg:px-10 lg:py-24">
+          <div className="relative z-10">
+            <h1 className="max-w-5xl text-[clamp(3.35rem,6vw,5.75rem)] font-semibold leading-[.94] tracking-[-.04em]">
+              Public startup signals, cleaned and scored.
             </h1>
-            <p className="mt-6 max-w-xl text-base leading-7 text-muted sm:text-lg">
-              Pico turns scattered public hiring and company data into a
-              focused, explainable radar for developers choosing where to apply
-              next.
+            <p className="mt-8 max-w-[62ch] text-base leading-7 text-muted sm:text-lg">
+              Pico gives developers one decision-ready view of startup roles
+              scattered across Hacker News and Y Combinator—without hiding the
+              source or the reason behind the score.
             </p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-10 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/dashboard"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-primary px-5 font-medium text-primary-foreground transition hover:brightness-110"
+                className="inline-flex h-12 items-center justify-center gap-2 bg-primary px-6 font-medium text-primary-foreground"
               >
-                View Dashboard <ArrowRight className="size-4" />
+                Explore opportunities <ArrowRight className="size-4" />
               </Link>
               <a
-                href="#how-it-works"
-                className="inline-flex h-12 items-center justify-center rounded-xl border border-border px-5 font-medium transition hover:bg-surface-muted"
+                href="#workflow"
+                className="inline-flex h-12 items-center justify-center border border-foreground px-6 font-medium"
               >
-                See How It Works
+                See the pipeline
               </a>
             </div>
-            <p className="mt-5 text-xs text-muted-foreground">
-              No login. Public data only. Every signal keeps its source.
-            </p>
-          </div>
-          <HeroCardStack />
-        </div>
-      </section>
-      <section className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
-        <div className="grid gap-6 md:grid-cols-3">
-          {[
-            {
-              icon: Radar,
-              title: "Useful signal, not noise",
-              copy: "Roles, founders, links, location, freshness, and salary roll into one transparent score.",
-            },
-            {
-              icon: Database,
-              title: "Normalized at the source",
-              copy: "Messy records become consistent startup profiles that remain searchable and comparable.",
-            },
-            {
-              icon: ShieldCheck,
-              title: "Public by design",
-              copy: "Only public company, team, hiring, application, and official contact signals are surfaced.",
-            },
-          ].map(({ icon: Icon, title, copy }) => (
-            <div
-              key={title}
-              className="rounded-2xl border border-border bg-card p-6"
-            >
-              <span className="mb-5 grid size-10 place-items-center rounded-xl bg-primary-muted text-primary">
-                <Icon className="size-5" />
-              </span>
-              <h2 className="text-lg font-semibold">{title}</h2>
-              <p className="mt-2 text-sm leading-6 text-muted">{copy}</p>
+            <div className="mt-10 grid gap-3 text-xs text-muted sm:grid-cols-3">
+              {facts.map((fact) => (
+                <span key={fact} className="flex items-center gap-2">
+                  <Check className="size-3.5 text-success" />
+                  {fact}
+                </span>
+              ))}
             </div>
-          ))}
+          </div>
+          <IsometricSignalPipeline />
         </div>
       </section>
       <section
-        id="how-it-works"
-        className="border-y border-border-muted bg-surface/50 px-6 py-24 lg:px-8"
+        id="workflow"
+        className="mx-auto max-w-[1440px] px-5 py-32 lg:px-10 lg:py-48"
       >
-        <div className="mx-auto max-w-7xl">
-          <p className="text-sm font-medium text-accent">How it works</p>
-          <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">
-            From changing source pages to a resilient opportunity feed.
+        <div className="grid items-end gap-10 border-b border-border pb-14 lg:grid-cols-2">
+          <h2 className="max-w-3xl text-4xl font-medium leading-tight tracking-[-.035em] sm:text-5xl">
+            Messy inputs become a shortlist you can trust.
           </h2>
-          <div className="mt-12 grid gap-5 md:grid-cols-3">
-            {[
-              "Collect public signals",
-              "Validate and normalize",
-              "Score what matters",
-            ].map((title, index) => (
-              <div
-                key={title}
-                className="rounded-2xl border border-border bg-background p-6"
-              >
-                <span className="font-mono text-xs text-primary">
-                  0{index + 1}
-                </span>
-                <h3 className="mt-6 text-lg font-semibold">{title}</h3>
-                <p className="mt-2 text-sm leading-6 text-muted">
-                  {index === 0
-                    ? "Bright Data collectors watch approved public startup and hiring pages."
-                    : index === 1
-                      ? "Every row passes source-specific validation. Good partial records survive; bad rows are counted."
-                      : "A deterministic score explains exactly why each startup deserves attention."}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-      <section className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
-        <div className="grid gap-10 lg:grid-cols-2 lg:items-end">
-          <div>
-            <p className="text-sm font-medium text-primary">
-              Source-aware and self-healing
-            </p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
-              A broken source never erases yesterday&apos;s useful data.
-            </h2>
-            <p className="mt-5 max-w-xl text-base leading-7 text-muted">
-              Pico validates each record, saves valid partial results, reports
-              source health, and keeps the last successful dataset visible when
-              a collector fails.
-            </p>
-          </div>
-          <div className="grid gap-3">
-            {sources.map((source) => (
-              <a
-                key={source.name}
-                href={source.href}
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center justify-between rounded-2xl border border-border bg-card px-5 py-4 transition hover:border-primary"
-              >
-                <span>
-                  <strong className="block text-sm">{source.name}</strong>
-                  <span className="text-xs text-muted">{source.detail}</span>
-                </span>
-                <ArrowRight className="size-4 text-muted" />
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
-      <section className="px-6 pb-24 lg:px-8">
-        <div className="mx-auto max-w-7xl overflow-hidden rounded-3xl border border-primary/30 bg-[radial-gradient(circle_at_top_left,var(--primary-muted),var(--surface)_60%)] p-8 sm:p-12">
-          <h2 className="max-w-xl text-3xl font-semibold tracking-tight sm:text-4xl">
-            Your next application deserves better signal.
-          </h2>
-          <p className="mt-4 max-w-xl text-muted">
-            Explore a clean, ranked view of startup opportunities—without
-            creating an account.
+          <p className="max-w-[62ch] text-base leading-7 text-muted lg:justify-self-end">
+            Each source gets its own validation and normalization contract.
+            Valid partial records survive. Bad rows are counted. Every retained
+            opportunity keeps a path back to public evidence.
           </p>
+        </div>
+        <div className="mt-16 grid grid-flow-dense grid-cols-1 gap-px bg-border lg:grid-cols-12">
+          <div className="bg-surface p-7 lg:col-span-7">
+            <IsometricSignalPipeline />
+          </div>
+          <div className="flex flex-col justify-between bg-accent p-8 text-accent-foreground lg:col-span-5">
+            <div>
+              <h3 className="text-3xl font-medium tracking-[-.03em]">
+                One pipeline. Four explicit transformations.
+              </h3>
+              <p className="mt-5 max-w-md leading-7 opacity-75">
+                Collect, validate, normalize, then score. The visual order is
+                the actual product order—not a marketing abstraction.
+              </p>
+            </div>
+            <ol className="mt-12 divide-y divide-accent-foreground/20 font-mono text-xs">
+              {[
+                "Approved public pages",
+                "Row-level schema validation",
+                "Source-specific normalized profile",
+                "Deterministic score + reasons",
+              ].map((item) => (
+                <li key={item} className="flex justify-between py-4">
+                  <span>{item}</span>
+                  <ArrowRight className="size-3" />
+                </li>
+              ))}
+            </ol>
+          </div>
+          <div className="bg-card p-7 lg:col-span-5">
+            <IsometricStartupCardStack />
+          </div>
+          <div className="flex flex-col justify-center bg-primary p-8 lg:col-span-7">
+            <h3 className="max-w-xl text-4xl font-medium tracking-[-.035em]">
+              The output feels like a product, not a spreadsheet cleanup.
+            </h3>
+            <p className="mt-6 max-w-[62ch] leading-7 text-primary-foreground/75">
+              Search by company, role, description, or technology. Filter for
+              remote work, application links, and founder information. Open any
+              card to see exactly what raised—or limited—its score.
+            </p>
+            <Link
+              href="/dashboard"
+              className="mt-10 inline-flex w-fit items-center gap-2 border-b border-foreground pb-1 font-medium"
+            >
+              Browse the ranked feed <ArrowRight className="size-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+      <section id="resilience" className="border-y border-border bg-surface">
+        <div className="mx-auto grid max-w-[1440px] items-center gap-12 px-5 py-32 lg:grid-cols-[.86fr_1.14fr] lg:px-10 lg:py-40">
+          <div>
+            <ShieldCheck className="size-8 text-accent" />
+            <h2 className="mt-8 max-w-xl text-4xl font-medium tracking-[-.035em] sm:text-5xl">
+              A broken source does not erase yesterday’s useful data.
+            </h2>
+            <p className="mt-6 max-w-[62ch] leading-7 text-muted">
+              Pico isolates invalid rows, saves valid partial results, records
+              collection health, and preserves the last successful dataset.
+              Collector repairs remain observable and human-controlled.
+            </p>
+            <div className="mt-10 grid gap-px bg-border sm:grid-cols-3">
+              {[
+                ["Healthy", "Valid run"],
+                ["Warning", "Partial data"],
+                ["Failed", "Prior data kept"],
+              ].map(([title, copy]) => (
+                <div key={title} className="bg-background p-4">
+                  <p className="font-medium">{title}</p>
+                  <p className="mt-1 text-xs text-muted">{copy}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <IsometricScraperHealthConsole />
+        </div>
+      </section>
+      <section className="px-5 py-32 lg:px-10 lg:py-48">
+        <div className="mx-auto max-w-[1440px] bg-foreground px-6 py-16 text-background sm:px-12 lg:flex lg:items-end lg:justify-between lg:px-16 lg:py-20">
+          <div>
+            <h2 className="max-w-4xl text-4xl font-medium leading-tight tracking-[-.035em] sm:text-6xl">
+              Spend less time reconciling tabs. Spend more time choosing well.
+            </h2>
+            <p className="mt-6 text-background/65">
+              No login required. The demo dataset is clearly marked.
+            </p>
+          </div>
           <Link
             href="/dashboard"
-            className="mt-8 inline-flex h-12 items-center gap-2 rounded-xl bg-primary px-5 font-medium text-primary-foreground"
+            className="mt-10 inline-flex h-14 shrink-0 items-center gap-3 bg-primary px-6 font-medium text-primary-foreground lg:mt-0"
           >
             Open Pico <ArrowRight className="size-4" />
           </Link>
         </div>
       </section>
-      <footer className="border-t border-border-muted px-6 py-8 text-center text-xs text-muted-foreground">
-        Pico only surfaces public startup, company, hiring, and contact signals.
-        It does not scrape login-protected, paywalled, hidden, or private
-        personal data.
+      <footer className="border-t border-border px-5 py-10 lg:px-10">
+        <div className="mx-auto flex max-w-[1440px] flex-col gap-4 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
+          <span className="font-semibold text-foreground">Pico</span>
+          <p>
+            Public startup, company, hiring, and official contact signals only.
+          </p>
+          <Link href="/dashboard" className="text-foreground hover:text-accent">
+            Dashboard
+          </Link>
+        </div>
       </footer>
     </main>
   );
