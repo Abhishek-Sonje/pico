@@ -1,36 +1,200 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Pico
 
-## Getting Started
+## One-Line Pitch
 
-First, run the development server:
+Pico is a self-healing startup opportunity radar that turns public company and hiring signals into a clean, searchable, explainable dashboard for developers.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Problem
+
+High-quality startup roles are scattered across monthly forum posts, company directories, and job pages. Each source has different fields, inconsistent formatting, and changing page structure. Developers lose time comparing incomplete records and still cannot tell which opportunities have the strongest signals.
+
+## Solution
+
+Pico collects approved public data through Bright Data Scraper Studio, validates every row, normalizes source-specific fields, stores useful records in Neon Postgres, and ranks startups with a deterministic signal score. Every score shows its reasons, every external link retains its public source, and one broken source cannot erase the last successful dataset.
+
+## Demo
+
+- Open `/` for the public product story.
+- Open `/dashboard` for search, filters, startup details, scoring reasons, and source health.
+- No login is required.
+- Without service credentials, Pico automatically shows clearly marked demo data.
+
+## Features
+
+- Search across company names, descriptions, roles, and technology signals
+- Source, role, remote, apply-link, and founder-info filters
+- Explainable 100-point opportunity score
+- Detailed role, team, public-link, and missing-field drawer
+- Real source-run counts and healthy, warning, or failed states
+- Partial-record tolerance and previous-data preservation
+- Responsive, keyboard-accessible dark interface
+- Structured startup and scraper APIs
+
+## Tech Stack
+
+- Next.js 16 App Router, React 19, and strict TypeScript
+- Tailwind CSS 4 with semantic design tokens
+- Motion and Lucide icons
+- Neon Postgres with Drizzle ORM and generated SQL migrations
+- Zod validation for environment values, API contracts, and scraper output
+- Vitest and Testing Library
+- pnpm only
+
+## Data Sources
+
+The MVP supports:
+
+1. Hacker News “Who is Hiring?”
+2. Y Combinator Companies
+3. Y Combinator Jobs
+
+Pico only surfaces public startup, company, hiring, application, team, and official contact signals. It does not scrape login-protected, paywalled, hidden, or private personal data. LinkedIn profiles and private email discovery are explicitly out of scope.
+
+## Bright Data Usage
+
+Each source has a published Scraper Studio collector, an environment-configured collector ID, a raw Zod schema, and a dedicated normalizer. The application uses Bright Data's Collection API:
+
+1. `POST /dca/trigger` starts the configured collector with a fixed approved public URL.
+2. The returned `collection_id` is retained as the snapshot ID.
+3. `GET /dca/dataset?id=<snapshot_id>` is polled until JSON records are ready.
+4. Transient server failures are retried with bounded exponential backoff.
+5. Each returned record is validated independently before any database write.
+
+The API key is imported only by server modules and is never returned to the browser.
+
+### Collector output contracts
+
+Collectors should publish camelCase JSON matching the schemas under `src/lib/normalizers`.
+
+- HN: `companyName`, `description`, `sourceUrl`, `websiteUrl`, `location`, `postedAt`, `roles`, `people`, `links`, `technologies`
+- YC Companies: `name`, `description`, `sourceUrl`, `websiteUrl`, `location`, `batch`, `industry`, `founders`, `roles`, `links`, `technologies`
+- YC Jobs: `companyName`, `description`, `companySourceUrl`, `sourceUrl`, `websiteUrl`, `location`, `industry`, `postedAt`, `role`, `founders`, `links`, `technologies`
+
+## Self-Healing Strategy
+
+Pico's resilience is deliberately observable:
+
+- Invalid rows are isolated instead of crashing the entire run.
+- Valid rows from a partial run are persisted and the run becomes `warning`.
+- Complete upstream failures create a `failed` source-run record.
+- Existing successful startup data is never deleted by a failed run.
+- Missing optional fields remain visible as missing-field labels.
+- Source health exposes record counts and the last completed outcome.
+- Collector schema drift is repaired in Scraper Studio, republished, and retried.
+
+Pico does not claim an unimplemented autonomous repair agent. Its “self-healing” behavior is the combination of validation, partial progress, saved-data preservation, visible health, and a documented collector recovery loop.
+
+## Data Ethics
+
+- Public pages only
+- No authentication bypass
+- No paywall bypass
+- No hidden or personal email extraction
+- No LinkedIn profile scraping
+- No spam or outreach workflow
+- Source URLs retained for traceability
+
+## Architecture
+
+```text
+Bright Data Scraper Studio
+        ↓
+Collection API client
+        ↓
+Source-specific Zod validation
+        ↓
+Source normalizer
+        ↓
+Deterministic score + reasons
+        ↓
+Transactional Drizzle upserts
+        ↓
+Neon Postgres
+        ↓
+Server query / API
+        ↓
+Interactive dashboard
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Business logic lives outside React components and route handlers. Database queries are isolated under `src/server`; route handlers validate and delegate.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Local Setup
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Requirements:
 
-## Learn More
+- Node.js 20.9 or newer
+- pnpm 10 or newer
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+pnpm install
+cp .env.example .env
+pnpm dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+On Windows PowerShell installations that block the pnpm script shim, use `pnpm.cmd`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Environment Variables
 
-## Deploy on Vercel
+| Variable                               | Purpose                                         |
+| -------------------------------------- | ----------------------------------------------- |
+| `DATABASE_URL`                         | Neon pooled Postgres connection string          |
+| `BRIGHTDATA_API_KEY`                   | Server-only Bright Data API key                 |
+| `BRIGHTDATA_HN_COLLECTOR_ID`           | Published HN collector                          |
+| `BRIGHTDATA_YC_COMPANIES_COLLECTOR_ID` | Published YC Companies collector                |
+| `BRIGHTDATA_YC_JOBS_COLLECTOR_ID`      | Published YC Jobs collector                     |
+| `NEXT_PUBLIC_APP_URL`                  | Trusted application origin for metadata         |
+| `PICO_DEMO_MODE`                       | Set to `true` to force clearly marked demo data |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Empty Bright Data values are allowed for local demo mode. Operations that require a missing value return a structured configuration error.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Database Setup
+
+```bash
+pnpm db:generate
+pnpm db:migrate
+pnpm db:studio
+```
+
+The codebase-first Drizzle schema is the source of truth. Generated migrations under `src/db/migrations` are committed; schema changes must never be pushed without a migration.
+
+## Running Scrapers
+
+Publish the matching collectors in Bright Data Scraper Studio, copy their IDs into `.env`, migrate the database, then invoke:
+
+```bash
+curl -X POST http://localhost:3000/api/scrape/run \
+  -H "Content-Type: application/json" \
+  -d '{"source":"hn"}'
+```
+
+Supported source values are `hn`, `yc-companies`, and `yc-jobs`. The route accepts only those fixed collectors and source URLs; callers cannot submit arbitrary scraping targets.
+
+## Commit History / Build Phases
+
+The Git history is intentionally incremental:
+
+1. Next.js and tooling foundation
+2. Semantic design system and landing page
+3. Neon/Drizzle schema and migration
+4. Domain contracts, scoring, and demo data
+5. Dashboard, filters, drawer, health, and APIs
+6. Bright Data client and source normalizers
+7. Transactional scraper persistence
+8. Documentation and final quality audit
+
+Every implementation phase is expected to pass lint, type checking, tests, and a production build.
+
+## Known Limitations
+
+- Live operation requires user-owned Neon and Bright Data accounts.
+- Collectors must be created and published in Scraper Studio before their IDs can be configured.
+- The scraper endpoint performs bounded polling and therefore needs a host that permits the configured route duration.
+- Cross-source company deduplication is intentionally conservative; source-specific records remain traceable.
+- Optional sources such as Product Hunt and Wellfound are not part of the MVP.
+
+## Future Improvements
+
+- Webhook delivery for long-running collections
+- Carefully reviewed cross-source entity resolution
+- Additional public sources after the three MVP collectors remain healthy
+- Deployment-level rate protection for operator-triggered collection runs
