@@ -1,3 +1,50 @@
 import { Badge } from "@/components/ui/badge";
-const cards = [{ name: "Linear Orbit", role: "Founding engineer", score: 92, className: "left-4 top-8 -rotate-3" }, { name: "Northstar Labs", role: "Full-stack developer", score: 87, className: "right-0 top-40 rotate-3" }, { name: "Morrow Systems", role: "Product engineer", score: 81, className: "bottom-6 left-12 -rotate-1" }];
-export function HeroCardStack() { return <div className="relative mx-auto h-[430px] w-full max-w-lg" aria-hidden><div className="absolute inset-10 rounded-full bg-primary/10 blur-3xl" />{cards.map((card, index) => <div key={card.name} className={`animate-float absolute w-[min(88%,360px)] rounded-2xl border border-border bg-card/90 p-5 shadow-card backdrop-blur ${card.className}`} style={{ animationDelay: `${index * -1.7}s` }}><div className="flex items-start justify-between"><div><p className="font-semibold">{card.name}</p><p className="mt-1 text-xs text-muted">{card.role}</p></div><span className="grid size-12 place-items-center rounded-full border border-primary/40 bg-primary-muted text-sm font-semibold text-primary">{card.score}</span></div><div className="mt-5 flex gap-2"><Badge>Hiring</Badge><Badge>Remote</Badge><Badge className="text-accent">Fresh</Badge></div></div>)}</div>; }
+const cards = [
+  {
+    name: "Linear Orbit",
+    role: "Founding engineer",
+    score: 92,
+    className: "left-4 top-8 -rotate-3",
+  },
+  {
+    name: "Northstar Labs",
+    role: "Full-stack developer",
+    score: 87,
+    className: "right-0 top-40 rotate-3",
+  },
+  {
+    name: "Morrow Systems",
+    role: "Product engineer",
+    score: 81,
+    className: "bottom-6 left-12 -rotate-1",
+  },
+];
+export function HeroCardStack() {
+  return (
+    <div className="relative mx-auto h-[430px] w-full max-w-lg" aria-hidden>
+      <div className="absolute inset-10 rounded-full bg-primary/10 blur-3xl" />
+      {cards.map((card, index) => (
+        <div
+          key={card.name}
+          className={`animate-float absolute w-[min(88%,360px)] rounded-2xl border border-border bg-card/90 p-5 shadow-card backdrop-blur ${card.className}`}
+          style={{ animationDelay: `${index * -1.7}s` }}
+        >
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="font-semibold">{card.name}</p>
+              <p className="mt-1 text-xs text-muted">{card.role}</p>
+            </div>
+            <span className="grid size-12 place-items-center rounded-full border border-primary/40 bg-primary-muted text-sm font-semibold text-primary">
+              {card.score}
+            </span>
+          </div>
+          <div className="mt-5 flex gap-2">
+            <Badge>Hiring</Badge>
+            <Badge>Remote</Badge>
+            <Badge className="text-accent">Fresh</Badge>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
