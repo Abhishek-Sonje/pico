@@ -31,6 +31,13 @@ Copy is concise, technical, and honest. Pico names its public sources, exposes s
 - Landing page: Persuade through the product’s real collection-to-decision workflow.
 - Dashboard and source health: Operate with scanability, provenance, and recovery ahead of decoration.
 
+## Dashboard composition
+
+- The dark Scraper Flight Recorder opens the surface and makes the YC Companies data path visible before discovery controls.
+- The Opportunity Radar is the dashboard's signature visual: signal score runs horizontally, public-profile completeness vertically, and role count controls point size.
+- A ranked evidence rail provides a precise list counterpart to the radar. Company comparison is limited to two records so reasons remain legible.
+- On narrow screens the plot becomes an accessible ranked list; comparison and evidence remain available without precision pointing.
+
 ## Accessibility and responsive behavior
 
 Maintain WCAG AA contrast, keyboard access, visible focus, semantic landmarks, resilient wrapping, and useful layouts from narrow mobile screens through wide desktop displays. Never encode health or score meaning by color alone.

@@ -140,6 +140,22 @@ a:active {
 .soft-pulse {
   animation: soft-pulse 3.2s ease-in-out infinite;
 }
+.skeleton-shimmer {
+  position: relative;
+}
+.skeleton-shimmer::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background: linear-gradient(
+    100deg,
+    transparent 18%,
+    rgb(255 255 255 / 0.48) 48%,
+    transparent 78%
+  );
+  transform: translateX(-110%);
+  animation: skeleton-sweep 1.65s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
 @keyframes signal-flow {
   to {
     background-position: -200% 0;
@@ -148,6 +164,11 @@ a:active {
 @keyframes soft-pulse {
   50% {
     opacity: 0.55;
+  }
+}
+@keyframes skeleton-sweep {
+  to {
+    transform: translateX(110%);
   }
 }
 @media (hover: hover) and (pointer: fine) {
@@ -163,7 +184,8 @@ a:active {
     scroll-behavior: auto;
   }
   .signal-line,
-  .soft-pulse {
+  .soft-pulse,
+  .skeleton-shimmer::after {
     animation: none !important;
   }
   .signal-line {

@@ -3,7 +3,10 @@ export function Skeleton({ className }: { className?: string }) {
   return (
     <div
       aria-hidden
-      className={cn("animate-pulse rounded-lg bg-surface-elevated", className)}
+      className={cn(
+        "skeleton-shimmer overflow-hidden rounded-lg bg-surface-muted",
+        className,
+      )}
     />
   );
 }

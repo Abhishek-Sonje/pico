@@ -11,7 +11,7 @@ export function IsometricScraperHealthConsole() {
         <article className="border border-warning/40 bg-card p-5 shadow-soft">
           <div className="flex items-center justify-between">
             <span className="font-mono text-[10px] text-muted">
-              CURRENT RUN
+              CONTROLLED RECOVERY
             </span>
             <AlertTriangle className="size-4 text-warning" />
           </div>
@@ -22,11 +22,11 @@ export function IsometricScraperHealthConsole() {
           <dl className="mt-5 grid grid-cols-2 gap-px bg-border text-xs">
             <div className="bg-surface p-3">
               <dt className="text-muted">Valid rows</dt>
-              <dd className="mt-1 font-mono font-bold">43</dd>
+              <dd className="mt-1 font-mono font-bold">SAVED</dd>
             </div>
             <div className="bg-surface p-3">
               <dt className="text-muted">Isolated</dt>
-              <dd className="mt-1 font-mono font-bold text-warning">7</dd>
+              <dd className="mt-1 font-mono font-bold text-warning">HELD</dd>
             </div>
           </dl>
         </article>

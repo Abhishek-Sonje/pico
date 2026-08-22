@@ -31,10 +31,10 @@ export function IsometricSignalPipeline() {
     <div
       ref={root}
       className="iso-stage relative min-h-[440px] overflow-hidden"
-      aria-label="Public sources flow through validation into a scored opportunity"
+      aria-label="The public YC Companies directory flows through validation into scored opportunities"
     >
       <div className="iso-plane absolute inset-x-[8%] top-24 h-72 border border-border bg-surface-muted/70" />
-      <div className="absolute left-[2%] top-20 z-10 grid gap-3 sm:left-[6%]">
+      <div className="absolute left-[4%] top-[39%] z-10 grid gap-3 sm:left-[7%]">
         {sources.map((source) => (
           <div
             data-pipeline-card
@@ -53,9 +53,7 @@ export function IsometricSignalPipeline() {
       >
         <DatabaseZap className="size-5" />
         <p className="mt-6 font-semibold">Bright Data Collector</p>
-        <p className="mt-1 font-mono text-[10px] opacity-70">
-          collector c_72f4
-        </p>
+        <p className="mt-1 font-mono text-[10px] opacity-70">YC_COMPANIES</p>
         <div className="mt-5 h-1 bg-accent-foreground/20">
           <div className="h-full w-4/5 bg-primary" />
         </div>
