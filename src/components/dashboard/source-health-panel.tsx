@@ -82,11 +82,6 @@ export function SourceHealthPanel({ health }: { health: SourceHealth[] }) {
                     Demo health data
                   </p>
                 )}
-                {source.collectorId && (
-                  <p className="mt-3 truncate font-mono text-[10px] text-muted-foreground">
-                    {source.collectorId}
-                  </p>
-                )}
               </div>
             ))
           ) : (

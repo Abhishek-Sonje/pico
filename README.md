@@ -27,8 +27,9 @@ Pico collects approved public data through Bright Data Scraper Studio, validates
 - Detailed role, team, public-link, and missing-field drawer
 - Real source-run counts and healthy, warning, or failed states
 - Partial-record tolerance and previous-data preservation
-- Responsive, keyboard-accessible dark interface
+- Responsive, keyboard-accessible warm light interface
 - Structured startup and scraper APIs
+- Bounded startup API pagination (`page`, `limit`, maximum 100 records)
 
 ## Tech Stack
 
@@ -142,6 +143,7 @@ On Windows PowerShell installations that block the pnpm script shim, use `pnpm.c
 | `BRIGHTDATA_PRODUCT_HUNT_COLLECTOR_ID` | Published Product Hunt collector                |
 | `BRIGHTDATA_YC_COMPANIES_COLLECTOR_ID` | Published YC Companies collector                |
 | `BRIGHTDATA_YC_JOBS_COLLECTOR_ID`      | Published YC Jobs collector                     |
+| `PICO_OPERATOR_KEY`                    | Secret required to trigger paid scraper runs    |
 | `NEXT_PUBLIC_APP_URL`                  | Trusted application origin for metadata         |
 | `PICO_DEMO_MODE`                       | Set to `true` to force clearly marked demo data |
 
@@ -164,10 +166,11 @@ Publish the matching collectors in Bright Data Scraper Studio, copy their IDs in
 ```bash
 curl -X POST http://localhost:3000/api/scrape/run \
   -H "Content-Type: application/json" \
+  -H "x-pico-operator-key: $PICO_OPERATOR_KEY" \
   -d '{"source":"product-hunt"}'
 ```
 
-Supported source values are `product-hunt`, `yc-companies`, and `yc-jobs`. The route accepts only those fixed collectors and source URLs; callers cannot submit arbitrary scraping targets.
+Supported source values are `product-hunt`, `yc-companies`, and `yc-jobs`. The route accepts only those fixed collectors and source URLs; callers cannot submit arbitrary scraping targets. The operator key, trusted-origin check, bounded request rate, and per-source concurrency guard protect paid collection runs. Multi-instance deployments should also add provider-level distributed rate limiting.
 
 ## Commit History / Build Phases
 
@@ -189,6 +192,7 @@ Every implementation phase is expected to pass lint, type checking, tests, and a
 - Live operation requires user-owned Neon and Bright Data accounts.
 - Collectors must be created and published in Scraper Studio before their IDs can be configured.
 - The scraper endpoint performs bounded polling and therefore needs a host that permits the configured route duration.
+- In-memory rate and concurrency guards apply per application instance; use provider-level distributed protection when scaling horizontally.
 - Cross-source company deduplication is intentionally conservative; source-specific records remain traceable.
 - Optional sources such as Wellfound and company official websites are not part of the MVP.
 
@@ -197,4 +201,4 @@ Every implementation phase is expected to pass lint, type checking, tests, and a
 - Webhook delivery for long-running collections
 - Carefully reviewed cross-source entity resolution
 - Additional public sources after the three MVP collectors remain healthy
-- Deployment-level rate protection for operator-triggered collection runs
+- Webhook delivery and durable distributed coordination for long-running collections

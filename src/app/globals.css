@@ -147,12 +147,16 @@ a:active {
   html {
     scroll-behavior: auto;
   }
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    scroll-behavior: auto !important;
-    transition-duration: 0.01ms !important;
+  .signal-line,
+  .soft-pulse {
+    animation: none !important;
+  }
+  .signal-line {
+    background: var(--primary);
+  }
+  button,
+  a,
+  header {
+    transition-duration: 80ms !important;
   }
 }

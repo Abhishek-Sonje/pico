@@ -22,13 +22,18 @@ export async function GET(request: Request) {
 
   try {
     const dashboard = await getDashboardData();
-    const startups = filterStartups(dashboard.startups, parsed.data);
+    const filtered = filterStartups(dashboard.startups, parsed.data);
+    const start = (parsed.data.page - 1) * parsed.data.limit;
+    const startups = filtered.slice(start, start + parsed.data.limit);
 
     return Response.json({
       data: startups,
       meta: {
         mode: dashboard.mode,
-        total: startups.length,
+        total: filtered.length,
+        page: parsed.data.page,
+        limit: parsed.data.limit,
+        pages: Math.ceil(filtered.length / parsed.data.limit),
       },
     });
   } catch (error) {

@@ -13,6 +13,7 @@ const envSchema = z.object({
   BRIGHTDATA_PRODUCT_HUNT_COLLECTOR_ID: optionalSecret,
   BRIGHTDATA_YC_COMPANIES_COLLECTOR_ID: optionalSecret,
   BRIGHTDATA_YC_JOBS_COLLECTOR_ID: optionalSecret,
+  PICO_OPERATOR_KEY: optionalSecret,
   NEXT_PUBLIC_APP_URL: z.string().url().default("http://localhost:3000"),
   PICO_DEMO_MODE: z.enum(["true", "false"]).default("false"),
 });
@@ -25,6 +26,7 @@ export const env = envSchema.parse({
   BRIGHTDATA_YC_COMPANIES_COLLECTOR_ID:
     process.env.BRIGHTDATA_YC_COMPANIES_COLLECTOR_ID,
   BRIGHTDATA_YC_JOBS_COLLECTOR_ID: process.env.BRIGHTDATA_YC_JOBS_COLLECTOR_ID,
+  PICO_OPERATOR_KEY: process.env.PICO_OPERATOR_KEY,
   NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
   PICO_DEMO_MODE: process.env.PICO_DEMO_MODE,
 });

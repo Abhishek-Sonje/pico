@@ -1,4 +1,11 @@
-import { ArrowUpRight, BriefcaseBusiness, MapPin, Users } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
+import {
+  ArrowUpRight,
+  BriefcaseBusiness,
+  Clock3,
+  MapPin,
+  Users,
+} from "lucide-react";
 
 import type { StartupProfile } from "@/lib/types";
 import { Badge } from "@/components/ui/badge";
@@ -63,6 +70,15 @@ export function StartupCard({
               ? `${startup.people.length} public team signal${startup.people.length > 1 ? "s" : ""}`
               : "Founder info unavailable"}
           </span>
+          {startup.sourcePublishedAt && (
+            <span className="flex items-center gap-2">
+              <Clock3 className="size-3.5" />
+              Published{" "}
+              {formatDistanceToNow(new Date(startup.sourcePublishedAt), {
+                addSuffix: true,
+              })}
+            </span>
+          )}
         </div>
 
         <div className="mt-auto flex items-center justify-between pt-6">

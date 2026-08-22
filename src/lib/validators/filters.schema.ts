@@ -11,5 +11,10 @@ export const filtersSchema = z.object({
   remote: optionalBoolean,
   hasApplyLink: optionalBoolean,
   hasFounderInfo: optionalBoolean,
+  page: z.coerce.number().int().min(1).default(1),
+  limit: z.coerce.number().int().min(1).max(100).default(50),
 });
-export type StartupFilters = z.infer<typeof filtersSchema>;
+export type StartupFilters = Omit<
+  z.infer<typeof filtersSchema>,
+  "page" | "limit"
+>;
