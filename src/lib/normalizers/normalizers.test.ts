@@ -27,6 +27,20 @@ describe("source normalizers", () => {
     });
     expect(result.people[0].sourceUrl).toContain("careful");
   });
+  it("normalizes the published YC collector output", () => {
+    const result = normalizeYcCompany({
+      company_name: "Careful",
+      description: "Clinical infrastructure",
+      company_url: "https://www.ycombinator.com/companies/careful",
+      yc_batch: "W24",
+      industry: ["Healthcare", "B2B"],
+      location: "San Francisco",
+      input: { url: "https://www.ycombinator.com/companies" },
+    });
+    expect(result.name).toBe("Careful");
+    expect(result.batch).toBe("W24");
+    expect(result.industry).toBe("Healthcare, B2B");
+  });
   it("turns a YC job into a startup role", () => {
     const result = normalizeYcJob({
       companyName: "North",

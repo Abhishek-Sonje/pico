@@ -31,7 +31,7 @@ export function AppNavbar({ page }: { page: NavbarPage }) {
 
   return (
     <header
-      className={`sticky top-0 z-50 border-b border-border bg-foreground text-background shadow-soft transition-transform duration-200 ease-out ${visible ? "translate-y-0" : "-translate-y-full"}`}
+      className={`sticky top-0 z-50 border-b border-border bg-foreground text-background shadow-soft transition-transform duration-200 ease-out motion-reduce:transition-none ${visible ? "translate-y-0" : "-translate-y-full"}`}
       onFocusCapture={() => setVisible(true)}
     >
       <nav

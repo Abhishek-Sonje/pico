@@ -13,7 +13,7 @@ const facts = [
 
 export default function Home() {
   return (
-    <main className="w-full max-w-full overflow-x-hidden">
+    <main className="w-full max-w-full overflow-x-clip">
       <AppNavbar page="home" />
 
       <section className="editorial-grid border-b border-border">

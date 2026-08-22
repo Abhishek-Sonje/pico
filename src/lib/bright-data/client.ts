@@ -6,6 +6,27 @@ import { requireBrightDataApiKey } from "./collectors";
 
 type Fetch = typeof fetch;
 
+function parseDatasetPayload(body: string): unknown {
+  try {
+    return JSON.parse(body) as unknown;
+  } catch {
+    try {
+      const records = body
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter(Boolean)
+        .map((line) => JSON.parse(line) as unknown);
+      if (records.length) return records;
+    } catch {
+      // A structured error below keeps upstream response details private.
+    }
+    throw new BrightDataError(
+      "Bright Data returned an unsupported dataset format.",
+      "INVALID_RESPONSE",
+    );
+  }
+}
+
 export class BrightDataClient {
   constructor(
     private readonly fetchImpl: Fetch = fetch,
@@ -54,7 +75,7 @@ export class BrightDataClient {
 
     while (Date.now() - startedAt < this.timeoutMs) {
       const response = await this.request(url, { headers: this.headers() });
-      const payload: unknown = await response.json();
+      const payload = parseDatasetPayload(await response.text());
 
       if (Array.isArray(payload)) return payload;
       if (

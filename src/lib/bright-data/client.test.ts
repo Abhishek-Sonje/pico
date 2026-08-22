@@ -21,4 +21,24 @@ describe("BrightDataClient", () => {
     expect(result.records).toEqual([{ companyName: "Acme" }]);
     expect(fetchMock).toHaveBeenCalledTimes(3);
   });
+
+  it("accepts newline-delimited JSON datasets", async () => {
+    const fetchMock = vi
+      .fn<typeof fetch>()
+      .mockResolvedValueOnce(Response.json({ collection_id: "j_snapshot" }))
+      .mockResolvedValueOnce(
+        new Response('{"name":"Acme"}\n{"name":"North"}', {
+          headers: { "Content-Type": "application/x-ndjson" },
+        }),
+      );
+
+    const client = new BrightDataClient(fetchMock, 0, 500, "test-key");
+    const result = await client.run({
+      source: "product-hunt",
+      collectorId: "c_test",
+      sourceUrl: "https://www.producthunt.com/",
+    });
+
+    expect(result.records).toEqual([{ name: "Acme" }, { name: "North" }]);
+  });
 });
