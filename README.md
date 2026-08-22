@@ -1,4 +1,6 @@
 # Pico
+<img width="2400" height="1350" alt="screenshot-studio-1787410189125" src="https://github.com/user-attachments/assets/2c9406ba-9188-4b59-88b9-75a14ef59286" />
+
 
 ## One-Line Pitch
 
