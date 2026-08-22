@@ -171,6 +171,14 @@ a:active {
     transform: translateX(110%);
   }
 }
+.comparison-cue-arrow {
+  animation: comparison-cue 1.1s ease-in-out infinite;
+}
+@keyframes comparison-cue {
+  50% {
+    transform: translateY(4px);
+  }
+}
 @media (hover: hover) and (pointer: fine) {
   .lift:hover {
     transform: translateY(-4px);
@@ -185,7 +193,8 @@ a:active {
   }
   .signal-line,
   .soft-pulse,
-  .skeleton-shimmer::after {
+  .skeleton-shimmer::after,
+  .comparison-cue-arrow {
     animation: none !important;
   }
   .signal-line {

@@ -15,6 +15,7 @@ export function ComparisonPanel({
 
   return (
     <section
+      id="company-comparison"
       aria-labelledby="comparison-title"
       className="border-y border-border bg-primary-muted px-5 py-8 lg:px-8"
     >

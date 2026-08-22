@@ -1,7 +1,13 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ArrowRight, GitCompareArrows, RotateCcw, Search } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowRight,
+  GitCompareArrows,
+  RotateCcw,
+  Search,
+} from "lucide-react";
 import type { DashboardData, StartupProfile } from "@/lib/types";
 import { filterStartups } from "@/lib/filters/filter-startups";
 import { Input } from "@/components/ui/input";
@@ -43,6 +49,7 @@ export function DashboardShell({
   const [filters, setFilters] = useState(initialFilters);
   const [selected, setSelected] = useState<StartupProfile | null>(null);
   const [comparedIds, setComparedIds] = useState<string[]>([]);
+  const [showCompareCue, setShowCompareCue] = useState(false);
   const roleOptions = useMemo(
     () =>
       [
@@ -84,14 +91,17 @@ export function DashboardShell({
   const compared = comparedIds
     .map((id) => initialData.startups.find((startup) => startup.id === id))
     .filter(Boolean) as StartupProfile[];
-  const toggleCompare = (startup: StartupProfile) =>
-    setComparedIds((current) =>
-      current.includes(startup.id)
-        ? current.filter((id) => id !== startup.id)
-        : current.length === 2
-          ? [current[1], startup.id]
-          : [...current, startup.id],
-    );
+  const toggleCompare = (startup: StartupProfile) => {
+    setComparedIds((current) => {
+      if (current.includes(startup.id)) {
+        return current.filter((id) => id !== startup.id);
+      }
+      setShowCompareCue(true);
+      return current.length === 2
+        ? [current[1], startup.id]
+        : [...current, startup.id];
+    });
+  };
 
   return (
     <main className="min-h-screen bg-background">
@@ -269,6 +279,25 @@ export function DashboardShell({
           </div>
         )}
       </div>
+      {comparedIds.length > 0 && showCompareCue && (
+        <button
+          type="button"
+          onClick={() => {
+            setShowCompareCue(false);
+            document
+              .getElementById("company-comparison")
+              ?.scrollIntoView({ behavior: "smooth", block: "start" });
+          }}
+          className="fixed bottom-5 left-1/2 z-40 flex min-h-12 -translate-x-1/2 items-center gap-3 whitespace-nowrap bg-foreground px-4 py-2.5 text-sm font-medium text-background shadow-card"
+          aria-label={`View comparison for ${comparedIds.length} selected ${comparedIds.length === 1 ? "company" : "companies"}`}
+        >
+          <span>{comparedIds.length}/2 selected · View comparison</span>
+          <ArrowDown
+            className="comparison-cue-arrow size-4 text-primary"
+            aria-hidden="true"
+          />
+        </button>
+      )}
       <ComparisonPanel
         startups={compared}
         onRemove={(id) =>
