@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import type { DashboardData, StartupProfile } from "@/lib/types";
 import { filterStartups } from "@/lib/filters/filter-startups";
+import { calculateTechnologyMatch } from "@/lib/matching/technology-match";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,7 @@ import { StartupDetailDrawer } from "./startup-detail-drawer";
 import { OpportunityRadar, profileCompleteness } from "./opportunity-radar";
 import { ComparisonPanel } from "./comparison-panel";
 import { ScraperFlightRecorder } from "./scraper-flight-recorder";
+import { TechnologyMatchPanel } from "./technology-match-panel";
 
 type UiFilters = {
   q: string;
@@ -50,6 +52,9 @@ export function DashboardShell({
   const [selected, setSelected] = useState<StartupProfile | null>(null);
   const [comparedIds, setComparedIds] = useState<string[]>([]);
   const [showCompareCue, setShowCompareCue] = useState(false);
+  const [selectedTechnologies, setSelectedTechnologies] = useState<string[]>(
+    [],
+  );
   const roleOptions = useMemo(
     () =>
       [
@@ -72,6 +77,22 @@ export function DashboardShell({
       ].sort(),
     [initialData.startups],
   );
+  const technologyOptions = useMemo(() => {
+    const frequency = new Map<string, number>();
+    initialData.startups.forEach((startup) =>
+      startup.technologies.forEach((technology) =>
+        frequency.set(technology, (frequency.get(technology) ?? 0) + 1),
+      ),
+    );
+    return [...frequency.entries()]
+      .sort(([technologyA, countA], [technologyB, countB]) =>
+        countB === countA
+          ? technologyA.localeCompare(technologyB)
+          : countB - countA,
+      )
+      .slice(0, 12)
+      .map(([technology]) => technology);
+  }, [initialData.startups]);
   const visible = useMemo(
     () =>
       filterStartups(initialData.startups, {
@@ -85,8 +106,16 @@ export function DashboardShell({
           (startup) =>
             !filters.industry || startup.industry === filters.industry,
         )
-        .sort((a, b) => b.signalScore - a.signalScore),
-    [filters, initialData.startups],
+        .sort((a, b) => {
+          if (selectedTechnologies.length) {
+            const matchDifference =
+              (calculateTechnologyMatch(b, selectedTechnologies)?.score ?? 0) -
+              (calculateTechnologyMatch(a, selectedTechnologies)?.score ?? 0);
+            if (matchDifference) return matchDifference;
+          }
+          return b.signalScore - a.signalScore;
+        }),
+    [filters, initialData.startups, selectedTechnologies],
   );
   const compared = comparedIds
     .map((id) => initialData.startups.find((startup) => startup.id === id))
@@ -106,31 +135,46 @@ export function DashboardShell({
   return (
     <main className="min-h-screen bg-background">
       <AppNavbar page="dashboard" />
-      <ScraperFlightRecorder data={initialData} />
-      <div className="mx-auto max-w-[1500px] px-5 py-9 lg:px-8 lg:py-12">
-        <header className="flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
-          <div>
-            <h1 className="max-w-4xl text-[clamp(2.5rem,5vw,4.75rem)] font-semibold leading-[.98] tracking-[-.04em]">
-              Find the YC company worth your next move.
-            </h1>
-            <p className="mt-5 max-w-[68ch] leading-7 text-muted">
-              One public directory, validated row by row and ranked with every
-              scoring reason intact.
-            </p>
-          </div>
-          <div className="flex shrink-0 items-center gap-2 self-start border border-border bg-card px-3 py-2 font-mono text-[11px] text-accent lg:self-auto">
-            <span className="size-2 bg-primary" />
-            {initialData.mode === "demo" ? "DEMO DATA" : "LIVE · YC COMPANIES"}
-          </div>
-        </header>
+      <div className="mx-auto max-w-[1500px] px-5 py-6 lg:px-8 lg:py-8">
+        <div className="grid gap-5 lg:grid-cols-[minmax(300px,.62fr)_minmax(0,1.38fr)] lg:items-stretch">
+          <header className="flex flex-col justify-between gap-4 py-1">
+            <div>
+              <h1 className="max-w-xl text-[clamp(2rem,3.5vw,3.5rem)] font-semibold leading-[1.02] tracking-[-.04em]">
+                Find your best-fit YC company.
+              </h1>
+              <p className="mt-3 max-w-[54ch] text-sm leading-6 text-muted">
+                Match your stack, inspect the evidence, then compare the
+                strongest opportunities.
+              </p>
+            </div>
+            <div className="flex shrink-0 items-center gap-2 self-start font-mono text-[11px] text-accent">
+              <span className="size-2 bg-primary" />
+              {initialData.mode === "demo"
+                ? "DEMO DATA"
+                : "LIVE · YC COMPANIES"}
+            </div>
+          </header>
+          <TechnologyMatchPanel
+            technologies={technologyOptions}
+            selected={selectedTechnologies}
+            onToggle={(technology) =>
+              setSelectedTechnologies((current) =>
+                current.includes(technology)
+                  ? current.filter((item) => item !== technology)
+                  : [...current, technology],
+              )
+            }
+            onClear={() => setSelectedTechnologies([])}
+          />
+        </div>
         {initialData.notice && (
-          <div className="mt-6 border border-warning/30 bg-warning/10 px-4 py-3 text-sm text-warning">
+          <div className="mt-4 border border-warning/30 bg-warning/10 px-4 py-2.5 text-xs text-warning">
             {initialData.notice}
           </div>
         )}
         <section
           aria-label="Opportunity filters"
-          className="mt-9 border-y border-border py-4"
+          className="mt-5 border-y border-border py-3"
         >
           <div className="grid gap-3 lg:grid-cols-[minmax(260px,1fr)_auto]">
             <div className="relative">
@@ -196,7 +240,7 @@ export function DashboardShell({
           </div>
         </section>
         {visible.length ? (
-          <div className="mt-9 grid gap-10 xl:grid-cols-[minmax(0,1.35fr)_minmax(360px,.65fr)]">
+          <div className="mt-6 grid gap-8 xl:grid-cols-[minmax(0,1.35fr)_minmax(360px,.65fr)]">
             <OpportunityRadar
               startups={visible}
               comparedIds={comparedIds}
@@ -213,7 +257,10 @@ export function DashboardShell({
                     Ranked evidence
                   </h2>
                   <p className="mt-1 text-sm text-muted">
-                    {visible.length} companies · strongest signal first
+                    {visible.length} companies ·{" "}
+                    {selectedTechnologies.length
+                      ? "best technology match first"
+                      : "strongest signal first"}
                   </p>
                 </div>
                 <GitCompareArrows className="size-5 text-accent" />
@@ -221,6 +268,10 @@ export function DashboardShell({
               <div className="mt-5 max-h-[470px] overflow-y-auto border-y border-border pr-2">
                 {visible.map((startup, index) => {
                   const chosen = comparedIds.includes(startup.id);
+                  const match = calculateTechnologyMatch(
+                    startup,
+                    selectedTechnologies,
+                  );
                   return (
                     <article
                       key={startup.id}
@@ -239,7 +290,9 @@ export function DashboardShell({
                             {startup.name}
                           </strong>
                           <span className="font-mono text-xs text-accent">
-                            {startup.signalScore}
+                            {match
+                              ? `${match.score}% match`
+                              : startup.signalScore}
                           </span>
                         </span>
                         <span className="mt-1 block truncate text-xs text-muted">
@@ -278,6 +331,9 @@ export function DashboardShell({
             </Button>
           </div>
         )}
+        <div className="mt-12">
+          <ScraperFlightRecorder data={initialData} />
+        </div>
       </div>
       {comparedIds.length > 0 && showCompareCue && (
         <button
@@ -300,6 +356,7 @@ export function DashboardShell({
       )}
       <ComparisonPanel
         startups={compared}
+        selectedTechnologies={selectedTechnologies}
         onRemove={(id) =>
           setComparedIds((current) => current.filter((item) => item !== id))
         }

@@ -5,7 +5,7 @@ import type {
   StartupProfile,
 } from "@/lib/types";
 
-const now = "2026-08-18T10:00:00.000Z";
+const now = "2026-08-22T16:30:00.000Z";
 const base = (
   id: string,
   name: string,
@@ -155,6 +155,163 @@ export const demoStartups: StartupProfile[] = [
     ],
     missingFields: ["Open roles", "Apply link", "Founder information"],
   },
+  {
+    ...base("demo-4", "Kiteframe AI", "yc-companies", 90),
+    description:
+      "Evaluation infrastructure for teams deploying production AI agents.",
+    industry: "Artificial intelligence",
+    location: "San Francisco / Remote",
+    batch: "S26",
+    websiteUrl: "https://example.net/kiteframe",
+    technologies: ["Python", "TypeScript", "Postgres", "Kubernetes"],
+    roles: [
+      {
+        id: "r4",
+        title: "AI infrastructure engineer",
+        location: "San Francisco / Remote",
+        remote: true,
+        salary: "$170k–$220k",
+        applyUrl: "https://example.net/kiteframe/careers",
+        sourceUrl: "https://www.ycombinator.com/companies",
+      },
+    ],
+    people: [
+      {
+        id: "p4",
+        name: "Nora Alvarez",
+        role: "Co-founder",
+        sourceUrl: "https://www.ycombinator.com/companies",
+      },
+    ],
+    links: [
+      {
+        id: "l4",
+        type: "careers",
+        url: "https://example.net/kiteframe/careers",
+        label: "Careers",
+      },
+    ],
+    scoreReasons: [
+      { label: "Hiring roles found", points: 25, present: true },
+      { label: "Clear apply link available", points: 15, present: true },
+      { label: "Technology stack detected", points: 15, present: true },
+      { label: "Salary listed", points: 5, present: true },
+    ],
+    missingFields: [],
+  },
+  {
+    ...base("demo-5", "Ledgerlane", "yc-companies", 78),
+    description: "Real-time reconciliation for modern finance teams.",
+    industry: "Fintech",
+    location: "New York, NY",
+    batch: "W26",
+    websiteUrl: "https://example.net/ledgerlane",
+    technologies: ["Go", "React", "Postgres", "AWS"],
+    roles: [
+      {
+        id: "r5",
+        title: "Backend engineer",
+        location: "New York, NY",
+        remote: false,
+        salary: "$155k–$195k",
+        applyUrl: "https://example.net/ledgerlane/apply",
+        sourceUrl: "https://www.ycombinator.com/companies",
+      },
+    ],
+    people: [],
+    links: [
+      {
+        id: "l5",
+        type: "apply",
+        url: "https://example.net/ledgerlane/apply",
+        label: "Apply",
+      },
+    ],
+    scoreReasons: [
+      { label: "Hiring roles found", points: 25, present: true },
+      { label: "Clear apply link available", points: 15, present: true },
+      { label: "Technology stack detected", points: 15, present: true },
+    ],
+    missingFields: ["Founder information"],
+  },
+  {
+    ...base("demo-6", "Relay Robotics", "yc-companies", 74),
+    description: "Autonomous inspection software for industrial facilities.",
+    industry: "Industrials",
+    location: "Austin, TX",
+    batch: "S25",
+    websiteUrl: "https://example.net/relay-robotics",
+    technologies: ["C++", "Python", "ROS", "Computer Vision"],
+    roles: [
+      {
+        id: "r6",
+        title: "Robotics software engineer",
+        location: "Austin, TX",
+        remote: false,
+        salary: null,
+        applyUrl: "https://example.net/relay-robotics/jobs",
+        sourceUrl: "https://www.ycombinator.com/companies",
+      },
+    ],
+    people: [
+      {
+        id: "p6",
+        name: "Samir Rao",
+        role: "Founder",
+        sourceUrl: "https://www.ycombinator.com/companies",
+      },
+    ],
+    links: [],
+    scoreReasons: [
+      { label: "Hiring roles found", points: 25, present: true },
+      {
+        label: "Founder or team information available",
+        points: 10,
+        present: true,
+      },
+      { label: "Technology stack detected", points: 15, present: true },
+    ],
+    missingFields: ["Salary"],
+  },
+  {
+    ...base("demo-7", "Northstar Bio", "yc-companies", 69),
+    description: "Laboratory workflow software for early-stage biotech teams.",
+    industry: "Biotech",
+    location: "Boston, MA / Remote",
+    batch: "W25",
+    websiteUrl: "https://example.net/northstar-bio",
+    technologies: ["React", "Python", "GraphQL"],
+    roles: [
+      {
+        id: "r7",
+        title: "Product engineer",
+        location: "US / Remote",
+        remote: true,
+        salary: "$140k–$180k",
+        applyUrl: "https://example.net/northstar-bio/careers",
+        sourceUrl: "https://www.ycombinator.com/companies",
+      },
+    ],
+    people: [],
+    links: [
+      {
+        id: "l7",
+        type: "careers",
+        url: "https://example.net/northstar-bio/careers",
+        label: "Careers",
+      },
+    ],
+    scoreReasons: [
+      { label: "Hiring roles found", points: 25, present: true },
+      { label: "Clear apply link available", points: 15, present: true },
+      {
+        label: "Remote or location information available",
+        points: 10,
+        present: true,
+      },
+    ],
+    missingFields: ["Founder information"],
+  },
 ];
 
 const health = (
@@ -180,18 +337,19 @@ const health = (
 });
 export const demoDashboardData: DashboardData = {
   startups: demoStartups,
-  health: [health("yc-companies", "YC Companies", 40)],
+  health: [health("yc-companies", "YC Companies", demoStartups.length)],
   runHistory: [
     {
       id: "demo-run-1",
       status: "healthy",
-      recordsFound: 40,
-      recordsValid: 40,
+      recordsFound: demoStartups.length,
+      recordsValid: demoStartups.length,
       recordsInvalid: 0,
       startedAt: now,
       finishedAt: now,
     },
   ],
   mode: "demo",
-  notice: "Demo data — connect Neon and Bright Data to see live source runs.",
+  notice:
+    "Curated beta demo · fictional records for feature evaluation. Connect Neon and Bright Data to view live YC Companies data.",
 };
