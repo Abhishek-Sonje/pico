@@ -105,6 +105,21 @@ a:active {
   );
   background-size: min(8vw, 112px) 100%;
 }
+.radar-grid {
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--border) 72%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--border) 72%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 10% 10%;
+  mask-image: linear-gradient(to bottom, black 72%, transparent);
+}
 .iso-stage {
   perspective: 1100px;
   transform-style: preserve-3d;

@@ -27,9 +27,6 @@ describe("filterStartups", () => {
       "Morrow Systems",
     );
     expect(
-      filterStartups(demoStartups, { q: "", source: "yc-companies" })[0]?.name,
-    ).toBe("Tandem Health");
-    expect(
       filterStartups(demoStartups, { q: "", role: "full-stack" })[0]?.name,
     ).toBe("Tandem Health");
     expect(filterStartups(demoStartups, { q: "", remote: true })).toHaveLength(

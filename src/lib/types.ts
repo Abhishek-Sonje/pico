@@ -1,4 +1,5 @@
 export const dataSources = ["product-hunt", "yc-companies", "yc-jobs"] as const;
+export const activeDataSources = ["yc-companies"] as const;
 export type DataSource = (typeof dataSources)[number];
 export type HealthStatus = "healthy" | "warning" | "failed";
 export type LinkType =
@@ -67,9 +68,19 @@ export type SourceHealth = {
   lastRunAt: string | null;
   demo: boolean;
 };
+export type SourceRunSummary = {
+  id: string;
+  status: HealthStatus;
+  recordsFound: number;
+  recordsValid: number;
+  recordsInvalid: number;
+  startedAt: string;
+  finishedAt: string | null;
+};
 export type DashboardData = {
   startups: StartupProfile[];
   health: SourceHealth[];
+  runHistory: SourceRunSummary[];
   mode: "live" | "demo";
   notice: string | null;
 };

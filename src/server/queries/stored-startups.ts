@@ -19,6 +19,7 @@ export async function getStoredDashboardData(): Promise<DashboardData> {
   const rows = await db
     .select()
     .from(startups)
+    .where(eq(startups.source, "yc-companies"))
     .orderBy(desc(startups.signalScore));
   const startupIds = rows.map(({ id }) => id);
   const [allRoles, allLinks, allReasons, allPeople, allTechnologies] =
@@ -125,24 +126,15 @@ export async function getStoredDashboardData(): Promise<DashboardData> {
   const latestRuns = await db
     .select()
     .from(sourceRuns)
+    .where(eq(sourceRuns.source, "yc-companies"))
     .orderBy(desc(sourceRuns.startedAt));
   const seen = new Set<string>();
   const health = latestRuns
     .filter((run) => !seen.has(run.source) && seen.add(run.source))
     .map((run) => ({
       source: run.source,
-      sourceName:
-        run.source === "product-hunt"
-          ? "Product Hunt"
-          : run.source === "yc-companies"
-            ? "YC Companies"
-            : "YC Jobs",
-      sourceUrl:
-        run.source === "product-hunt"
-          ? "https://www.producthunt.com/"
-          : run.source === "yc-companies"
-            ? "https://www.ycombinator.com/companies"
-            : "https://www.ycombinator.com/jobs",
+      sourceName: "YC Companies",
+      sourceUrl: "https://www.ycombinator.com/companies",
       collectorId: run.collectorId,
       status: run.status,
       recordsFound: run.recordsFound,
@@ -151,5 +143,20 @@ export async function getStoredDashboardData(): Promise<DashboardData> {
       lastRunAt: run.finishedAt?.toISOString() ?? run.startedAt.toISOString(),
       demo: false,
     }));
-  return { startups: profiles, health, mode: "live", notice: null };
+  const runHistory = latestRuns.slice(0, 6).map((run) => ({
+    id: run.id,
+    status: run.status,
+    recordsFound: run.recordsFound,
+    recordsValid: run.recordsValid,
+    recordsInvalid: run.recordsInvalid,
+    startedAt: run.startedAt.toISOString(),
+    finishedAt: run.finishedAt?.toISOString() ?? null,
+  }));
+  return {
+    startups: profiles,
+    health,
+    runHistory,
+    mode: "live",
+    notice: null,
+  };
 }

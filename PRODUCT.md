@@ -8,7 +8,7 @@ web
 
 ## Users
 
-Developers evaluating startup opportunities from fragmented public company and hiring sources. They use Pico to search, compare, and understand which startups are worth applying to without manually reconciling inconsistent records.
+Developers evaluating startup opportunities from the public Y Combinator company directory. They use Pico to search, compare, and understand which startups deserve a closer look without manually reconciling incomplete company records.
 
 ## Product Purpose
 
@@ -20,7 +20,7 @@ Pico combines approved Bright Data collectors, row-level validation, source-spec
 
 ## Operating Context
 
-Users evaluate records gathered from Product Hunt, Y Combinator Companies, and Y Combinator Jobs. They search and filter opportunities, inspect role and founder details, review score reasons, and monitor source health. Operators configure and publish the fixed Bright Data collectors and can trigger approved source runs.
+Users evaluate records gathered from Y Combinator Companies. They search and filter opportunities, inspect role and founder details, compare companies, review score reasons, and monitor collector health. Operators configure and publish the fixed Bright Data collector and can trigger approved source runs.
 
 ## Capabilities and Constraints
 
@@ -30,7 +30,7 @@ Users evaluate records gathered from Product Hunt, Y Combinator Companies, and Y
 - Expose record-level details, missing fields, source provenance, and source-run health.
 - Preserve successful startup data when a later source run fails.
 - Use public pages only; no authentication or paywall bypass, LinkedIn scraping, private email discovery, spam, or outreach workflow.
-- Wellfound and company official websites are not MVP data sources.
+- Product Hunt, YC Jobs, Wellfound, and company official websites are not submission data sources.
 - Demo data is clearly marked when service credentials are unavailable.
 
 ## Brand Commitments

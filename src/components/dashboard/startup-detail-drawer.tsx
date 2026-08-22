@@ -7,6 +7,7 @@ import {
   Check,
   MapPin,
   Minus,
+  GitCompareArrows,
   Users,
   X,
 } from "lucide-react";
@@ -18,9 +19,11 @@ import { Button } from "@/components/ui/button";
 export function StartupDetailDrawer({
   startup,
   onClose,
+  onCompare,
 }: {
   startup: StartupProfile | null;
   onClose: () => void;
+  onCompare?: (startup: StartupProfile) => void;
 }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
@@ -64,6 +67,15 @@ export function StartupDetailDrawer({
         </header>
 
         <div className="space-y-8 p-6">
+          {onCompare && (
+            <Button
+              className="w-full"
+              variant="outline"
+              onClick={() => onCompare(startup)}
+            >
+              <GitCompareArrows className="size-4" /> Add to comparison
+            </Button>
+          )}
           <div className="flex items-center gap-4 border border-primary bg-primary-muted p-4">
             <span className="grid size-16 place-items-center bg-primary font-mono text-xl font-bold text-primary-foreground">
               {startup.signalScore}

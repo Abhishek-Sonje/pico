@@ -24,7 +24,7 @@ export default function Home() {
             </h1>
             <p className="mt-6 max-w-[62ch] text-base leading-7 text-muted sm:text-lg">
               Pico gives developers one decision-ready view of startup roles
-              from Product Hunt and Y Combinator, with the source and every
+              from the Y Combinator company directory, with the source and every
               scoring reason kept visible.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -70,7 +70,7 @@ export default function Home() {
             </p>
             <ol className="mt-8 divide-y divide-border border-y border-border">
               {[
-                ["Collect", "Product Hunt and YC"],
+                ["Collect", "YC Companies"],
                 ["Clean", "Validate and normalize"],
                 ["Decide", "Score with reasons"],
               ].map(([title, detail]) => (

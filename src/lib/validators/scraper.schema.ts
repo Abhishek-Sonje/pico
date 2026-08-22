@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { dataSources } from "@/lib/types";
+import { activeDataSources } from "@/lib/types";
 
 export const scraperRunRequestSchema = z.object({
-  source: z.enum(dataSources),
+  source: z.enum(activeDataSources),
 });
 
 export const rawRoleSchema = z.object({

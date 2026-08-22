@@ -10,7 +10,7 @@ High-quality startup roles are scattered across monthly forum posts, company dir
 
 ## Solution
 
-Pico collects approved public data through Bright Data Scraper Studio, validates every row, normalizes source-specific fields, stores useful records in Neon Postgres, and ranks startups with a deterministic signal score. Every score shows its reasons, every external link retains its public source, and one broken source cannot erase the last successful dataset.
+Pico collects the public Y Combinator company directory through Bright Data Scraper Studio, validates every row, stores useful records in Neon Postgres, and ranks companies with a deterministic signal score. Every score shows its reasons, every external link retains its source, and a broken collection cannot erase the last successful dataset.
 
 ## Demo
 
@@ -22,7 +22,9 @@ Pico collects approved public data through Bright Data Scraper Studio, validates
 ## Features
 
 - Search across company names, descriptions, roles, and technology signals
-- Source, role, remote, apply-link, and founder-info filters
+- Industry, role, remote, apply-link, and founder-info filters
+- Interactive opportunity radar and two-company evidence comparison
+- Real scraper flight recorder with recent collection history
 - Explainable 100-point opportunity score
 - Detailed role, team, public-link, and missing-field drawer
 - Real source-run counts and healthy, warning, or failed states
@@ -41,19 +43,15 @@ Pico collects approved public data through Bright Data Scraper Studio, validates
 - Vitest and Testing Library
 - pnpm only
 
-## Data Sources
+## Data Source
 
-The MVP supports:
-
-1. Y Combinator Companies
-2. Y Combinator Jobs
-3. Product Hunt
+The submission build intentionally supports one reliable source: **Y Combinator Companies**. Historical experiments with other collectors are excluded from product queries and claims.
 
 Pico only surfaces public startup, company, hiring, application, team, and official contact signals. It does not scrape login-protected, paywalled, hidden, or private personal data. LinkedIn profiles and private email discovery are explicitly out of scope.
 
 ## Bright Data Usage
 
-Each source has a published Scraper Studio collector, an environment-configured collector ID, a raw Zod schema, and a dedicated normalizer. The application uses Bright Data's Collection API:
+The source has a published Scraper Studio collector, an environment-configured collector ID, a raw Zod schema, and a dedicated normalizer. The application uses Bright Data's Collection API:
 
 1. `POST /dca/trigger` starts the configured collector with a fixed approved public URL.
 2. The returned `collection_id` is retained as the snapshot ID.
@@ -67,9 +65,7 @@ The API key is imported only by server modules and is never returned to the brow
 
 Collectors should publish camelCase JSON matching the schemas under `src/lib/normalizers`.
 
-- Product Hunt: `name`, `tagline`, `description`, `sourceUrl`, `websiteUrl`, `location`, `launchedAt`, `makers`, `links`, `topics`
 - YC Companies: `name`, `description`, `sourceUrl`, `websiteUrl`, `location`, `batch`, `industry`, `founders`, `roles`, `links`, `technologies`
-- YC Jobs: `companyName`, `description`, `companySourceUrl`, `sourceUrl`, `websiteUrl`, `location`, `industry`, `postedAt`, `role`, `founders`, `links`, `technologies`
 
 ## Self-Healing Strategy
 
@@ -140,9 +136,7 @@ On Windows PowerShell installations that block the pnpm script shim, use `pnpm.c
 | -------------------------------------- | ----------------------------------------------- |
 | `DATABASE_URL`                         | Neon pooled Postgres connection string          |
 | `BRIGHTDATA_API_KEY`                   | Server-only Bright Data API key                 |
-| `BRIGHTDATA_PRODUCT_HUNT_COLLECTOR_ID` | Published Product Hunt collector                |
 | `BRIGHTDATA_YC_COMPANIES_COLLECTOR_ID` | Published YC Companies collector                |
-| `BRIGHTDATA_YC_JOBS_COLLECTOR_ID`      | Published YC Jobs collector                     |
 | `PICO_OPERATOR_KEY`                    | Secret required to trigger paid scraper runs    |
 | `NEXT_PUBLIC_APP_URL`                  | Trusted application origin for metadata         |
 | `PICO_DEMO_MODE`                       | Set to `true` to force clearly marked demo data |
@@ -167,10 +161,10 @@ Publish the matching collectors in Bright Data Scraper Studio, copy their IDs in
 curl -X POST http://localhost:3000/api/scrape/run \
   -H "Content-Type: application/json" \
   -H "x-pico-operator-key: $PICO_OPERATOR_KEY" \
-  -d '{"source":"product-hunt"}'
+  -d '{"source":"yc-companies"}'
 ```
 
-Supported source values are `product-hunt`, `yc-companies`, and `yc-jobs`. The route accepts only those fixed collectors and source URLs; callers cannot submit arbitrary scraping targets. The operator key, trusted-origin check, bounded request rate, and per-source concurrency guard protect paid collection runs. Multi-instance deployments should also add provider-level distributed rate limiting.
+The only supported source value is `yc-companies`. The route accepts only its fixed collector and public URL; callers cannot submit arbitrary scraping targets. The operator key, trusted-origin check, bounded request rate, and concurrency guard protect paid collection runs. Multi-instance deployments should also add provider-level distributed rate limiting.
 
 ## Commit History / Build Phases
 
@@ -193,12 +187,11 @@ Every implementation phase is expected to pass lint, type checking, tests, and a
 - Collectors must be created and published in Scraper Studio before their IDs can be configured.
 - The scraper endpoint performs bounded polling and therefore needs a host that permits the configured route duration.
 - In-memory rate and concurrency guards apply per application instance; use provider-level distributed protection when scaling horizontally.
-- Cross-source company deduplication is intentionally conservative; source-specific records remain traceable.
-- Optional sources such as Wellfound and company official websites are not part of the MVP.
+- Product Hunt, YC Jobs, Wellfound, and company websites are not submission sources.
 
 ## Future Improvements
 
 - Webhook delivery for long-running collections
 - Carefully reviewed cross-source entity resolution
-- Additional public sources after the three MVP collectors remain healthy
+- Additional public sources only after the YC collector remains demonstrably healthy
 - Webhook delivery and durable distributed coordination for long-running collections

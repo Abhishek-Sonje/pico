@@ -5,24 +5,14 @@ import { env } from "@/lib/validators/env.schema";
 import type { CollectorConfig } from "./types";
 import { BrightDataError } from "./types";
 
-const sourceUrls: Record<DataSource, string> = {
-  "product-hunt": "https://www.producthunt.com/",
-  "yc-companies": "https://www.ycombinator.com/companies",
-  "yc-jobs": "https://www.ycombinator.com/jobs",
-};
-
-function getCollectorId(source: DataSource) {
-  if (source === "product-hunt") {
-    return env.BRIGHTDATA_PRODUCT_HUNT_COLLECTOR_ID;
-  }
-  if (source === "yc-companies") {
-    return env.BRIGHTDATA_YC_COMPANIES_COLLECTOR_ID;
-  }
-  return env.BRIGHTDATA_YC_JOBS_COLLECTOR_ID;
-}
-
 export function getCollectorConfig(source: DataSource): CollectorConfig {
-  const collectorId = getCollectorId(source);
+  if (source !== "yc-companies") {
+    throw new BrightDataError(
+      "Pico's submission build supports YC Companies only.",
+      "NOT_CONFIGURED",
+    );
+  }
+  const collectorId = env.BRIGHTDATA_YC_COMPANIES_COLLECTOR_ID;
   if (!collectorId) {
     throw new BrightDataError(
       `The ${source} Bright Data collector is not configured.`,
@@ -30,7 +20,11 @@ export function getCollectorConfig(source: DataSource): CollectorConfig {
     );
   }
 
-  return { source, collectorId, sourceUrl: sourceUrls[source] };
+  return {
+    source,
+    collectorId,
+    sourceUrl: "https://www.ycombinator.com/companies",
+  };
 }
 
 export function requireBrightDataApiKey() {

@@ -4,7 +4,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ArrowRight, Check, DatabaseZap } from "lucide-react";
 
-const sources = ["Product Hunt", "YC Companies", "YC Jobs"];
+const sources = ["YC Companies"];
 
 export function IsometricSignalPipeline() {
   const root = useRef<HTMLDivElement>(null);

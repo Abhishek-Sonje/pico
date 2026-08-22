@@ -20,9 +20,9 @@ export default async function HealthPage() {
             Source health
           </h1>
           <p className="mt-4 leading-7 text-muted">
-            Latest collection outcomes for Pico’s approved public sources.
-            Warning and failed runs preserve previously successful opportunity
-            data.
+            Latest collection outcomes for Pico’s approved YC Companies
+            collector. Warning and failed runs preserve previously successful
+            opportunity data.
           </p>
         </div>
         {data.notice && (

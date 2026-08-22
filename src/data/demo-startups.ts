@@ -39,7 +39,7 @@ const base = (
 
 export const demoStartups: StartupProfile[] = [
   {
-    ...base("demo-1", "Orbital", "yc-jobs", 95),
+    ...base("demo-1", "Orbital", "yc-companies", 95),
     description:
       "Developer infrastructure for teams shipping reliable AI products.",
     industry: "Developer tools",
@@ -142,12 +142,12 @@ export const demoStartups: StartupProfile[] = [
     missingFields: [],
   },
   {
-    ...base("demo-3", "Morrow Systems", "product-hunt", 61),
+    ...base("demo-3", "Morrow Systems", "yc-companies", 61),
     description: "Automation for climate operations teams.",
     industry: "Climate",
     location: "London",
     technologies: ["Go"],
-    sourceUrl: "https://www.producthunt.com/",
+    sourceUrl: "https://www.ycombinator.com/companies",
     roles: [],
     scoreReasons: [
       { label: "Hiring roles found", points: 25, present: false },
@@ -180,10 +180,17 @@ const health = (
 });
 export const demoDashboardData: DashboardData = {
   startups: demoStartups,
-  health: [
-    health("product-hunt", "Product Hunt", 38),
-    health("yc-companies", "YC Companies", 112),
-    health("yc-jobs", "YC Jobs", 74),
+  health: [health("yc-companies", "YC Companies", 40)],
+  runHistory: [
+    {
+      id: "demo-run-1",
+      status: "healthy",
+      recordsFound: 40,
+      recordsValid: 40,
+      recordsInvalid: 0,
+      startedAt: now,
+      finishedAt: now,
+    },
   ],
   mode: "demo",
   notice: "Demo data — connect Neon and Bright Data to see live source runs.",
